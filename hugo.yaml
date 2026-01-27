@@ -1,0 +1,57 @@
+baseURL: "https://example.org/"
+languageCode: "en-us"
+title: "Jacob Shore"
+description: "The hub of all things Jacob Shore."
+theme: "neso"
+
+outputs:
+  home:
+    - "HTML"
+    - "RSS"
+    - "JSON"
+
+params:
+  author:
+    name: "Jacob Shore"
+    bio: "Software engineer, language learner, and builder of small but stubborn projects."
+    location: "Beit Shemesh, Israel"
+    email: "jacob@dewofyouryouth.com"
+    avatar: "/images/avatar.jpg"
+  neso:
+    enableGitInfo: true
+    support_theme_author: true
+    social:
+      links:
+        - name: "GitHub"
+          url: "https://github.com/DewofyourYouth"
+        - name: "LinkedIn"
+          url: "https://www.linkedin.com/in/jacob-shore-2b4b6215/"
+        - name: "X"
+          url: "https://x.com/JacobShore19"
+        - name: "Instagram"
+          url: "https://www.instagram.com/yaakshore/"
+        - name: "YouTube"
+          url: "https://www.youtube.com/@dewofyouryouth"
+        - name: "Discord"
+          url: "https://discordapp.com/users/dew_of_your_youth"
+    home:
+      display_mode: "profile"
+      profile:
+        avatar_image: "/images/profile.png"
+
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+    - source: "assets/notwatching/hugo_stats\\.json"
+      target: "css"
+    - source: "(postcss|tailwind)\\.config\\.js"
+      target: "css"
+
+module:
+  mounts:
+    - source: "assets"
+      target: "assets"
+    - disableWatch: true
+      source: "hugo_stats.json"
+      target: "assets/notwatching/hugo_stats.json"
