@@ -1,13 +1,6 @@
 {{- define "main" -}}
   {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . -}}
   {{- $projects := site.Data.projects | default (slice) -}}
-  {{- with site.Data.projects_enriched -}}
-    {{- if .projects -}}
-      {{- $projects = .projects -}}
-    {{- else if gt (len .) 0 -}}
-      {{- $projects = . -}}
-    {{- end -}}
-  {{- end -}}
 
   {{- $displayMode := site.Params.neso.home.display_mode | default "profile" }}
   {{- $isProfile := eq $displayMode "profile" }}
@@ -95,25 +88,23 @@
       <div class="grid gap-6 grid-cols-1">
         {{- range $projects }}
           {{- $project := . -}}
+          {{- $displayName := $project.name -}}
+          {{- $displayTagline := $project.tagline -}}
           <article class="border border-neso-deco3 rounded-2xl p-6 bg-neso-bg2">
             <header class="not-last:mb-3">
               <h3 class="text-xl font-semibold text-neso-fg1">
                 {{- if $project.url -}}
                   <a class="hover:text-neso-splash focus-visible:text-neso-splash" href="{{ $project.url }}">
-                    {{ $project.name }}
+                    {{ $displayName }}
                   </a>
                 {{- else -}}
-                  {{ $project.name }}
+                  {{ $displayName }}
                 {{- end -}}
               </h3>
-              {{- with $project.tagline }}
+              {{- with $displayTagline }}
                 <p class="text-neso-fg2 mt-1">{{ . }}</p>
               {{- end }}
             </header>
-
-            {{- with $project.description }}
-              <p class="text-neso-fg2 not-last:mb-4">{{ . }}</p>
-            {{- end }}
 
             {{- with $project.card }}
               {{- if or .image .title .description }}
@@ -122,7 +113,7 @@
                      href="{{ $project.url }}">
                     {{- if .image }}
                       <div class="aspect-[16/9] bg-neso-bg2">
-                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $project.name }}">
+                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $displayName }}">
                       </div>
                     {{- else }}
                       <div class="aspect-[16/9] flex items-center justify-center bg-neso-bg2 text-neso-fg3 text-sm">
@@ -134,8 +125,8 @@
                       {{- with .type }}
                         <p class="text-xs uppercase tracking-wide text-neso-fg3">{{ . }}</p>
                       {{- end }}
-                      <h4 class="text-lg font-semibold text-neso-fg1 mt-2">{{ $project.name }}</h4>
-                      {{- with $project.description }}
+                      <h4 class="text-lg font-semibold text-neso-fg1 mt-2">{{ $displayName }}</h4>
+                      {{- with .description }}
                         <p class="text-neso-fg2 mt-2">{{ . }}</p>
                       {{- end }}
                       {{- with .site }}
@@ -147,7 +138,7 @@
                   <div class="border border-neso-deco3 rounded-2xl overflow-hidden bg-neso-bg1 not-last:mb-4">
                     {{- if .image }}
                       <div class="aspect-[16/9] bg-neso-bg2">
-                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $project.name }}">
+                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $displayName }}">
                       </div>
                     {{- else }}
                       <div class="aspect-[16/9] flex items-center justify-center bg-neso-bg2 text-neso-fg3 text-sm">

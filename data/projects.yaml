@@ -1,14 +1,23 @@
 - name: Dew of your Youth
   url: "https://dewofyouryouth.com"
-  tagline: "A nostalgic journey through classic video games."
-  description: "Revisiting the games that shaped my childhood with reviews, retrospectives, and gameplay videos."
+  tagline: "The ponderings of Jacob Shore"
+  card:
+    type: "Writing"
+    description: "My thoughts on life, tech, faith, heritage, and all the nerdy things I like to ponder."
+    image: "/images/projects/dew-of-your-youth.png"
 
 - name: "Daily Derja"
   url: "https://dailyderja.com"
   tagline: "Daily life, practicing Arabic."
-  description: "A fast, minimal home for writing, experiments, and links."
+  card:
+    type: "Language Learning Blog"
+    description: "Daily Derja is a daily journal written in Arabic."
+    image: "/images/projects/daily-derja.jpg"
 
 - name: "Türk Defter"
   url: "https://turk-defter.com"
-  tagline: "A visual catalog of the sites I build."
-  description: "Curated landing pages for client launches and case studies."
+  tagline: "Turkish Notebook: Documenting my learning journey of the Turkish language."
+  card:
+    type: "Language Learning Blog"
+    description: "Curated landing pages for client launches and case studies."
+    image: "/images/projects/turk-defter.jpg"
