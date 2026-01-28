@@ -1,7 +1,7 @@
 {
   "name": "jacob-shore",
   "private": true,
-  "devDependencies": {
+  "dependencies": {
     "tailwindcss": "^3.4.17"
   }
 }
