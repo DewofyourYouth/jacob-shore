@@ -1,0 +1,71 @@
+/*!
+ * Neso v0.1.0 (https://github.com/babeneso/hugo-neso/)
+ * Copyright (c) 2025 babeneso
+ * Licensed under MIT (https://github.com/babeneso/hugo-neso/blob/main/LICENSE)
+ */
+
+/*! tailwindcss v4.1.18 | MIT License | https://tailwindcss.com */
+@layer theme {
+  :root, :host {
+    --color-sky-500: oklch(68.5% .169 237.323);
+    --color-gray-100: oklch(96.7% .003 264.542);
+    --color-gray-300: oklch(87.2% .01 258.338);
+    --color-gray-400: oklch(70.7% .022 261.325);
+    --color-black: #000;
+    --color-white: #fff;
+    --color-neso-deco0: var(--color-black);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root, :host {
+      --color-neso-fg0: var(--color-white);
+      --color-neso-fg1: var(--color-gray-100);
+      --color-neso-fg2: var(--color-gray-300);
+      --color-neso-fg3: var(--color-gray-400);
+      --color-neso-deco0: var(--color-white);
+      --color-neso-deco1: #0000003d;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco1: color-mix(in oklab, var(--color-neso-deco0) 24%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-deco2: #00000029;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco2: color-mix(in oklab, var(--color-neso-deco0) 16%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-deco3: #0000001a;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco3: color-mix(in oklab, var(--color-neso-deco0) 10%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-bg0: oklch(18% .009 261.692);
+      --color-neso-bg1: var(--color-black);
+      --color-neso-bg2: oklch(20% .01 264.665);
+      --color-neso-bg3: oklch(25.8% .012 256.848);
+      --color-neso-accent: var(--color-sky-500);
+      --color-neso-splash: var(--color-sky-500);
+      --color-neso-okay: #3fd63f;
+      --color-neso-note: #04a8da;
+      --color-neso-ding: #e89700;
+      --color-neso-oops: #ee3f3f;
+    }
+  }
+}
+
+@layer base, components, utilities;
+

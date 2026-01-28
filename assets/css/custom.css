@@ -1,0 +1,88 @@
+/* 
+ * --------------------------------
+ * Tailwind generates the final CSS in the order below,
+ * later ones override earlier ones.
+ * --------------------------------
+ */
+
+
+@theme {
+    /* Tailwind's default theme will be injected here. */
+    
+    /* Define or override Tailwind's theme variables (design tokens).
+     * It's special – auto-generates utility classes like `bg-my-default`.
+     * Example: 
+     * --color-my-default: #bada55;
+     */
+    
+}
+
+@layer theme {
+    /* Theme variables defined in `@theme` will be injected here. */
+    
+    /* Custom CSS – other design tokens.
+     * Example: 
+     * :root { --my-favorite: #0290b0; }
+     */
+    
+}
+
+@layer base {
+    /* Tailwind's resets (Preflight) will be injected here. */
+    
+    /* Custom CSS – other resets.
+     * Example: 
+     * a { text-decoration: none; }
+     */
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+    }
+    
+}
+
+@layer components {
+    /* Custom CSS – components.
+     * Example: 
+     * .headline { font-size: 2rem; }
+     */
+    .thought-bubble {
+        background: var(--color-neso-bg1);
+        border: 1px solid var(--color-neso-deco3);
+        border-radius: 9999px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        max-width: 18rem;
+        white-space: normal;
+        position: relative;
+    }
+    .thought-bubble::after {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        bottom: -6px;
+        width: 12px;
+        height: 12px;
+        border-radius: 9999px;
+        background: var(--color-neso-bg1);
+        border: 1px solid var(--color-neso-deco3);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+}
+
+/* Define custom Tailwind utility classes,
+ * It's special – can be used with variants like `hover:shiny`.
+ * Example:
+ * @utility shiny { color: #ffffff; }
+ */
+
+
+@layer utilities {
+    /* Utility classes defined by `@utility` will be injected here. */
+    
+    /* Custom CSS – other utilities.
+     * Example: 
+     * .bright { color: #aaaaaa; }
+     */
+    .home-section { scroll-margin-top: 6rem; }
+    
+}

@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-01-28T01:08:47Z",
+  "projects": [
+    {
+      "name": "Dew of your Youth",
+      "url": "https://dewofyouryouth.com",
+      "tagline": "A personal blog where I flesh out my thoughts.",
+      "description": "My thoughts on life, tech, faith, heritage, and all the nerdy things I like to ponder.",
+      "card": {
+        "type": "summary",
+        "title": "Dew of Your Youth",
+        "description": "Dew of Your Youth is about thought, memory, matters of faith, and the systems we build to keep our thinking from dissolving.\nJewish texts, personal workflows, family archives, and languages learned along the way.\nIf you\u2019ve ever tried to organize your soul with Markdown, welcome.",
+        "image": "https://www.dewofyouryouth.com/images/logo.png",
+        "site": ""
+      }
+    },
+    {
+      "name": "Daily Derja",
+      "url": "https://dailyderja.com",
+      "tagline": "The hub of all things Jacob Shore.",
+      "description": "Daily Derja is a daily journal written in Arabic.",
+      "card": {
+        "type": "Language Learning Blog",
+        "title": "Daily Derja",
+        "description": "Daily Derja is a daily journal written in Arabic.",
+        "image": "https://dailyderja.com/images/hero.jpg",
+        "site": ""
+      }
+    },
+    {
+      "name": "T\u00fcrk Defter",
+      "url": "https://turk-defter.com",
+      "tagline": "Turkish Notebook: Documenting my learning journey of the Turkish language.",
+      "card": {
+        "type": "Language Learning Blog",
+        "title": "T\u00fcrk Defter",
+        "description": "Curated landing pages for client launches and case studies.",
+        "image": "https://turk-defter.com/images/site-image.jpg",
+        "site": ""
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+/*!
+ * Neso v0.1.0 (https://github.com/babeneso/hugo-neso/)
+ * Copyright (c) 2025 babeneso
+ * Licensed under MIT (https://github.com/babeneso/hugo-neso/blob/main/LICENSE)
+ */
+
+/*! tailwindcss v4.1.18 | MIT License | https://tailwindcss.com */
+@layer theme {
+  :root, :host {
+    --color-neso-fg0: #111;
+    --color-neso-deco0: var(--color-neso-fg0);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root, :host {
+      --color-neso-fg0: #f5f2ec;
+      --color-neso-fg1: #ebe6dd;
+      --color-neso-fg2: #c9c1b6;
+      --color-neso-fg3: #a99f92;
+      --color-neso-deco0: var(--color-neso-fg0);
+      --color-neso-deco1: #1111113d;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco1: color-mix(in oklab, var(--color-neso-deco0) 24%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-deco2: #11111129;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco2: color-mix(in oklab, var(--color-neso-deco0) 16%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-deco3: #1111111a;
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      :root, :host {
+        --color-neso-deco3: color-mix(in oklab, var(--color-neso-deco0) 10%, transparent);
+      }
+    }
+
+    :root, :host {
+      --color-neso-bg0: #1e4d4f;
+      --color-neso-bg1: #1a4345;
+      --color-neso-bg2: #173c3e;
+      --color-neso-bg3: #143637;
+      --color-neso-accent: #7f8bb0;
+      --color-neso-splash: #8aa7a6;
+      --color-neso-okay: #3fd63f;
+      --color-neso-note: #04a8da;
+      --color-neso-ding: #e89700;
+      --color-neso-oops: #ee3f3f;
+    }
+  }
+}
+
+@layer base, components, utilities;
+

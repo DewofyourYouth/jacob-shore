@@ -1,0 +1,42 @@
+{{- if not site.Params.neso.hide_footer }}
+
+    {{- $uiIcons     := partialCached "_funcs/get-ui-icons.html" . }}
+
+    <footer class="layout-fluid py-r-xl flex flex-wrap items-center justify-center text-center text-sm text-neso-fg3 overflow-x-hidden">
+    
+    {{- if not site.Params.neso.hide_copyright }}
+        <span class="flex items-center not-first:sep-s-general">
+        {{- if site.Copyright }}
+            <span>{{ site.Copyright | markdownify }}</span>
+        {{- else }}
+            <span>&copy; {{ now.Year }} {{ site.Title }}</span>
+        {{- end }}
+        </span>
+    {{- end }}
+
+    {{- with site.Params.neso.footer_text }}
+        <span class="flex items-center not-first:sep-s-general">
+            <span>{{ . | markdownify }}</span>
+        </span>
+    {{- end }}
+
+    
+    {{- if site.Params.neso.support_theme_author }}
+        <span class="flex items-center not-first:sep-s-general">
+            <span>
+                Powered by&nbsp;<a class="text-neso-fg3 hover:text-neso-fg1 decoration-current" href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a>
+                &amp;&nbsp;<a class="text-neso-fg3 hover:text-neso-fg1 decoration-current" href="https://github.com/babeneso/" rel="noopener noreferrer" target="_blank">Neso</a>
+            </span>
+        </span>
+    {{- end }}
+    
+    </footer>
+{{- end }}
+
+{{- if not site.Params.neso.disable_scroll_to_top }}
+    <a href="#top" aria-label="Back to top" title="Back to Top" id="top-link" class="invisible fixed bottom-[60px] right-[30px] z-[99] w-[42px] h-[42px] p-[12px] rounded-full text-neso-fg2 hover:text-neso-splash focus-visible:text-neso-splash bg-neso-bg3 [transition:color_.5s,visibility_.5s,opacity_.5s_linear] focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="currentColor">
+            <path d="M3 2.25a.75.75 0 0 1 .75-.75h8.5a.75.75 0 0 1 0 1.5h-8.5A.75.75 0 0 1 3 2.25Zm5.53 2.97 3.75 3.75a.749.749 0 1 1-1.06 1.06L8.75 7.561v6.689a.75.75 0 0 1-1.5 0V7.561L4.78 10.03a.749.749 0 1 1-1.06-1.06l3.75-3.75a.749.749 0 0 1 1.06 0Z"></path>
+        </svg>
+    </a>
+{{- end }}
