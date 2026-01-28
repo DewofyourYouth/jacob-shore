@@ -29,8 +29,6 @@ menus:
       weight: 5
 
 params:
-  buildCSS: false
-  useTailwind: false
   feeds:
     latest:
       - name: "Dew of Your Youth"
@@ -47,7 +45,6 @@ params:
     name: "Jacob Shore"
     bio: "Software engineer, language learner, and builder of small but stubborn projects."
     location: "Beit Shemesh, Israel"
-    email: "jacob@dewofyouryouth.com"
     avatar: "/images/avatar.jpg"
   neso:
     branding:
