@@ -29,6 +29,8 @@ menus:
       weight: 5
 
 params:
+  buildCSS: false
+  useTailwind: false
   feeds:
     latest:
       - name: "Dew of Your Youth"
