@@ -1,0 +1,187 @@
+{{- define "main" -}}
+  <section class="layout not-last:mb-r-xl">
+    {{- if .Title }}
+      <header class="not-last:mb-r-lg">
+        <h1 class="font-bold text-3xl md:text-4xl text-neso-fg1">
+          {{ .Title }}
+        </h1>
+        {{- with .Description }}
+          <p class="text-neso-fg2 mt-2">{{ . }}</p>
+        {{- end }}
+      </header>
+    {{- end }}
+
+    {{- if .Content }}
+      <div class="cnt not-last:mb-r-xl">
+        {{- if not site.Params.neso.page.disable_heading_links }}
+          {{- partial "content/heading_links.html" .Content }}
+        {{- else }}
+          {{ .Content }}
+        {{- end }}
+      </div>
+    {{- end }}
+  </section>
+
+  {{- $items := slice -}}
+  {{- $errors := slice -}}
+  {{- $feedCounts := dict -}}
+  {{- range $feed := site.Params.feeds.latest }}
+    {{- $url := $feed.json | default $feed.rss | default "" -}}
+    {{- if $url }}
+      {{- $res := try (resources.GetRemote $url (dict "headers" (dict "User-Agent" "Mozilla/5.0 (Hugo)"))) -}}
+      {{- if $res.Err }}
+        {{- $errors = $errors | append (printf "%s (%s): %v" $feed.name $url $res.Err) -}}
+      {{- else }}
+        {{- $data := $res.Value | transform.Unmarshal -}}
+        {{- $entries := $data -}}
+        {{- if eq (printf "%T" $data) "map[string]interface {}" -}}
+          {{- with index $data "items" -}}
+            {{- $entries = . -}}
+          {{- else -}}
+            {{- with index $data "data" -}}
+              {{- $entries = . -}}
+            {{- else -}}
+              {{- with index $data "posts" -}}
+                {{- $entries = . -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- $count := 0 -}}
+        {{- range $k, $entry := $entries -}}
+          {{- $objectID := index $entry "objectID" -}}
+          {{- $include := true -}}
+          {{- if $objectID -}}
+            {{- $include = strings.HasSuffix $objectID ":0:0" -}}
+          {{- end -}}
+          {{- if not $include -}}
+            {{- continue -}}
+          {{- end -}}
+          {{- $title := or (index $entry "title") (index $entry "name") -}}
+          {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "external_url") -}}
+          {{- if not $link -}}
+            {{- $uri := index $entry "uri" -}}
+            {{- if $uri -}}
+              {{- $link = $uri -}}
+              {{- $base := $feed.base_url | default "" -}}
+              {{- if and $base (strings.HasPrefix $uri "/") -}}
+                {{- $link = printf "%s%s" $base $uri -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $dateRaw := or (index $entry "date_published") (index $entry "date") (index $entry "published") (index $entry "published_at") -}}
+          {{- $summary := or (index $entry "summary") (index $entry "description") (index $entry "content_text") -}}
+          {{- if not $summary -}}
+            {{- $summary = index $entry "content" -}}
+          {{- end -}}
+          {{- if $summary -}}
+            {{- $summary = $summary | truncate 200 -}}
+          {{- end -}}
+          {{- $image := or (index $entry "image") (index $entry "banner_image") (index $entry "featured_image") (index $entry "featuredImage") (index $entry "thumbnail") (index $entry "banner") -}}
+          {{- if and $image (eq (printf "%T" $image) "[]interface {}") -}}
+            {{- $image = index $image 0 -}}
+          {{- end -}}
+          {{- if not $image -}}
+            {{- $images := index $entry "images" -}}
+            {{- if and $images (eq (printf "%T" $images) "[]interface {}") -}}
+              {{- $image = index $images 0 -}}
+            {{- end -}}
+          {{- end -}}
+          {{- $date := "" -}}
+          {{- if $dateRaw -}}
+            {{- $asTime := try (time.AsTime $dateRaw) -}}
+            {{- if not $asTime.Err -}}
+              {{- $date = $asTime.Value -}}
+            {{- else -}}
+              {{- $parsed := try (time.Parse "2 January 2006" $dateRaw) -}}
+              {{- if not $parsed.Err -}}
+                {{- $date = $parsed.Value -}}
+              {{- else -}}
+                {{- $parsed = try (time.Parse "January 2, 2006" $dateRaw) -}}
+                {{- if not $parsed.Err -}}
+                  {{- $date = $parsed.Value -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+          {{- if and $title $link $date -}}
+            {{- $items = $items | append (dict
+              "title" $title
+              "link" $link
+              "date" $date
+              "summary" $summary
+              "source" $feed.name
+              "image" $image
+            ) -}}
+            {{- $count = add $count 1 -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $feedCounts = merge $feedCounts (dict $feed.name $count) -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+
+  {{- $items = sort $items "date" "desc" -}}
+  {{- $items = first 10 $items -}}
+
+  <section class="layout">
+    <header class="border-t border-t-neso-deco3 pt-r-xl mb-r-lg">
+      <h2 class="font-semibold text-neso-fg1 text-2xl md:text-3xl">Latest</h2>
+    </header>
+
+    {{- $feedStyles := dict
+      "Daily Derja" (dict "badge" "bg-emerald-600/15 text-emerald-800 border-emerald-600/40 dark:text-emerald-300" "card" "border-emerald-600/30")
+      "Türk Defter" (dict "badge" "bg-indigo-600/15 text-indigo-800 border-indigo-600/40 dark:text-indigo-300" "card" "border-indigo-600/30")
+      "Dew of Your Youth" (dict "badge" "bg-amber-600/15 text-amber-800 border-amber-600/40 dark:text-amber-300" "card" "border-amber-600/30")
+    -}}
+
+    {{- if gt (len $items) 0 }}
+      <div class="grid gap-6 grid-cols-1">
+        {{- range $items }}
+          {{- $item := . -}}
+          {{- $style := index $feedStyles $item.source | default (dict "badge" "bg-neso-bg3 text-neso-fg2 border-neso-deco3" "card" "border-neso-deco3") -}}
+          <article class="border rounded-2xl p-6 bg-neso-bg2 {{ index $style "card" }}">
+            {{- with $item.image }}
+              <a href="{{ $item.link }}" class="block overflow-hidden rounded-xl border border-neso-deco3 bg-neso-bg1 mb-4">
+                <div class="aspect-[16/9] bg-neso-bg3">
+                  <img class="h-full w-full object-cover" src="{{ . }}" alt="Featured image for {{ $item.title }}">
+                </div>
+              </a>
+            {{- end }}
+            <header class="not-last:mb-3">
+              <h3 class="text-xl font-semibold text-neso-fg1">
+                <a class="hover:text-neso-splash focus-visible:text-neso-splash" href="{{ $item.link }}">
+                  {{ $item.title }}
+                </a>
+              </h3>
+              <p class="text-neso-fg3 text-sm mt-1">
+                <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs {{ index $style "badge" }}">{{ $item.source }}</span>
+                <span class="ms-2">{{ $item.date | time.Format "January 2, 2006" }}</span>
+              </p>
+            </header>
+            {{- with $item.summary }}
+              <p class="text-neso-fg2">{{ . }}</p>
+            {{- end }}
+          </article>
+        {{- end }}
+      </div>
+    {{- else }}
+      <p class="text-neso-fg2">No items found yet.</p>
+    {{- end }}
+
+    {{- if gt (len $errors) 0 }}
+      <p class="text-neso-fg3 text-sm mt-6">Some feeds failed to load: {{ delimit $errors " · " }}</p>
+    {{- end }}
+    {{- if gt (len $feedCounts) 0 }}
+      <p class="text-neso-fg3 text-sm mt-3">
+        Feed counts:
+        {{- $pairs := slice -}}
+        {{- range $name, $count := $feedCounts -}}
+          {{- $pairs = $pairs | append (printf "%s: %d" $name $count) -}}
+        {{- end -}}
+        {{- delimit $pairs " · " -}}
+      </p>
+    {{- end }}
+  </section>
+{{- end -}}

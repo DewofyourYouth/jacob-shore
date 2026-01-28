@@ -1,6 +1,6 @@
 ---
 title: "Jacob Shore"
-description: "The Hub of all things Jacob Shore"
+description: "The hub of all things Jacob."
 ---
 
-I see a little silhouttee of a man
+Explore the projects below.

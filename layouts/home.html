@@ -1,0 +1,192 @@
+{{- define "main" -}}
+  {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . -}}
+  {{- $projects := site.Data.projects | default (slice) -}}
+  {{- with site.Data.projects_enriched -}}
+    {{- if .projects -}}
+      {{- $projects = .projects -}}
+    {{- else if gt (len .) 0 -}}
+      {{- $projects = . -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $displayMode := site.Params.neso.home.display_mode | default "profile" }}
+  {{- $isProfile := eq $displayMode "profile" }}
+  {{- $isIntro := eq $displayMode "intro" }}
+  {{- $isCustom := and (ne $displayMode "profile") (ne $displayMode "intro") }}
+
+  <section id="top" class="home-section layout not-last:mb-r-xl last:expansive border border-neso-deco3 rounded-3xl bg-neso-bg2 p-6 md:p-10">
+    {{- if $isProfile }}
+      <div class="flex flex-col items-center text-center">
+        {{- partial "home/profile.html" . }}
+      </div>
+    {{- else if $isIntro }}
+      {{- if .Title }}
+        <header class="not-last:mb-r-lg">
+          <h1 class="font-bold text-3xl md:text-4xl text-neso-fg1">
+            {{ .Title }}
+          </h1>
+          {{- with .Params.description }}
+            <p class="text-neso-fg2 mt-2">{{ . }}</p>
+          {{- end }}
+        </header>
+      {{- end }}
+
+      {{- if .Content }}
+        <div class="cnt not-last:mb-r-xl">
+          {{- if not site.Params.neso.page.disable_heading_links }}
+            {{- partial "content/heading_links.html" .Content }}
+          {{- else }}
+            {{ .Content }}
+          {{- end }}
+        </div>
+      {{- end }}
+
+      {{- partial "home/social_icons.html" (dict "align" "start") }}
+    {{- else if $isCustom }}
+      {{- $isHTML := false }}
+      {{- with .File }}
+        {{- $isHTML = in (slice "html" "htm") (lower .Ext) }}
+      {{- end }}
+      {{- if .Content }}
+        <div class="{{- if not $isHTML }} cnt {{- end -}}">
+          {{ .Content }}
+        </div>
+      {{- end }}
+    {{- end }}
+  </section>
+
+  {{- $author := site.Params.author }}
+  {{- if or $author.bio $author.location }}
+    <section id="about" class="home-section layout not-last:mb-r-xl border border-neso-deco3 rounded-3xl bg-neso-bg3 p-6 md:p-10">
+      <header class="border-b border-b-neso-deco3 pb-6 mb-6">
+        <h2 class="font-semibold text-neso-fg1 text-2xl md:text-3xl flex items-center">
+          About
+          <svg class="size-5 ms-2 stroke-3 stroke-current fill-none text-neso-fg3">
+            <use href="{{ $uiIcons.RelPermalink }}#sparkles" />
+          </svg>
+        </h2>
+      </header>
+
+      {{- with $author.bio }}
+        <p class="text-neso-fg2 text-lg not-last:mb-6">{{ . }}</p>
+      {{- end }}
+
+      {{- if $author.location }}
+        <ul class="flex flex-wrap gap-3 text-sm text-neso-fg3">
+          {{- with $author.location }}
+            <li class="px-3 py-2 rounded-full border border-neso-deco3">{{ . }}</li>
+          {{- end }}
+        </ul>
+      {{- end }}
+    </section>
+  {{- end }}
+
+  <section id="projects" class="home-section layout border border-neso-deco3 rounded-3xl bg-neso-bg1 p-6 md:p-10">
+    <header class="border-b border-b-neso-deco3 pb-6 mb-6">
+      <h2 class="font-semibold text-neso-fg1 text-2xl md:text-3xl flex items-center">
+        Projects
+        <svg class="size-5 ms-2 stroke-3 stroke-current fill-none text-neso-fg3">
+          <use href="{{ $uiIcons.RelPermalink }}#star" />
+        </svg>
+      </h2>
+    </header>
+
+    {{- if gt (len $projects) 0 }}
+      <div class="grid gap-6 grid-cols-1">
+        {{- range $projects }}
+          {{- $project := . -}}
+          <article class="border border-neso-deco3 rounded-2xl p-6 bg-neso-bg2">
+            <header class="not-last:mb-3">
+              <h3 class="text-xl font-semibold text-neso-fg1">
+                {{- if $project.url -}}
+                  <a class="hover:text-neso-splash focus-visible:text-neso-splash" href="{{ $project.url }}">
+                    {{ $project.name }}
+                  </a>
+                {{- else -}}
+                  {{ $project.name }}
+                {{- end -}}
+              </h3>
+              {{- with $project.tagline }}
+                <p class="text-neso-fg2 mt-1">{{ . }}</p>
+              {{- end }}
+            </header>
+
+            {{- with $project.description }}
+              <p class="text-neso-fg2 not-last:mb-4">{{ . }}</p>
+            {{- end }}
+
+            {{- with $project.card }}
+              {{- if or .image .title .description }}
+                {{- if $project.url }}
+                  <a class="block border border-neso-deco3 rounded-2xl overflow-hidden bg-neso-bg1 not-last:mb-4 hover:border-neso-splash focus-visible:border-neso-splash"
+                     href="{{ $project.url }}">
+                    {{- if .image }}
+                      <div class="aspect-[16/9] bg-neso-bg2">
+                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $project.name }}">
+                      </div>
+                    {{- else }}
+                      <div class="aspect-[16/9] flex items-center justify-center bg-neso-bg2 text-neso-fg3 text-sm">
+                        No card image found.
+                      </div>
+                    {{- end }}
+
+                    <div class="p-4">
+                      {{- with .type }}
+                        <p class="text-xs uppercase tracking-wide text-neso-fg3">{{ . }}</p>
+                      {{- end }}
+                      <h4 class="text-lg font-semibold text-neso-fg1 mt-2">{{ $project.name }}</h4>
+                      {{- with $project.description }}
+                        <p class="text-neso-fg2 mt-2">{{ . }}</p>
+                      {{- end }}
+                      {{- with .site }}
+                        <p class="text-xs text-neso-fg3 mt-3">{{ . }}</p>
+                      {{- end }}
+                    </div>
+                  </a>
+                {{- else }}
+                  <div class="border border-neso-deco3 rounded-2xl overflow-hidden bg-neso-bg1 not-last:mb-4">
+                    {{- if .image }}
+                      <div class="aspect-[16/9] bg-neso-bg2">
+                        <img class="h-full w-full object-cover" src="{{ .image }}" alt="Preview image for {{ $project.name }}">
+                      </div>
+                    {{- else }}
+                      <div class="aspect-[16/9] flex items-center justify-center bg-neso-bg2 text-neso-fg3 text-sm">
+                        No card image found.
+                      </div>
+                    {{- end }}
+
+                    <div class="p-4">
+                      {{- with .type }}
+                        <p class="text-xs uppercase tracking-wide text-neso-fg3">{{ . }}</p>
+                      {{- end }}
+                      <h4 class="text-lg font-semibold text-neso-fg1 mt-2">{{ $project.name }}</h4>
+                      {{- with $project.description }}
+                        <p class="text-neso-fg2 mt-2">{{ . }}</p>
+                      {{- end }}
+                      {{- with .site }}
+                        <p class="text-xs text-neso-fg3 mt-3">{{ . }}</p>
+                      {{- end }}
+                    </div>
+                  </div>
+                {{- end }}
+              {{- end }}
+            {{- end }}
+
+            {{- with $project.stack }}
+              <ul class="flex flex-wrap gap-2 text-sm text-neso-fg3">
+                {{- range . }}
+                  <li class="px-2 py-1 rounded-full border border-neso-deco3">{{ . }}</li>
+                {{- end }}
+              </ul>
+            {{- end }}
+          </article>
+        {{- end }}
+      </div>
+    {{- else }}
+      <p class="text-neso-fg2">
+        Add projects in <code>data/projects.yaml</code> to show them here.
+      </p>
+    {{- end }}
+  </section>
+
+{{- end -}}

@@ -1,0 +1,14 @@
+- name: Dew of your Youth
+  url: "https://dewofyouryouth.com"
+  tagline: "A nostalgic journey through classic video games."
+  description: "Revisiting the games that shaped my childhood with reviews, retrospectives, and gameplay videos."
+
+- name: "Daily Derja"
+  url: "https://dailyderja.com"
+  tagline: "The hub of all things Jacob Shore."
+  description: "A fast, minimal home for writing, experiments, and links."
+
+- name: "Türk Defter"
+  url: "https://turk-defter.com"
+  tagline: "A visual catalog of the sites I build."
+  description: "Curated landing pages for client launches and case studies."
