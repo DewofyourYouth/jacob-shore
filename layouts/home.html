@@ -109,7 +109,7 @@
             {{- with $project.card }}
               {{- if or .image .title .description }}
                 {{- if $project.url }}
-                  <a class="block border border-neso-deco3 rounded-2xl overflow-hidden bg-neso-bg1 not-last:mb-4 hover:border-neso-splash focus-visible:border-neso-splash"
+                  <a class="project-card-link block border border-neso-deco3 rounded-2xl overflow-hidden bg-neso-bg1 not-last:mb-4 hover:border-neso-splash focus-visible:border-neso-splash"
                      href="{{ $project.url }}">
                     {{- if .image }}
                       <div class="aspect-[16/9] bg-neso-bg2">
