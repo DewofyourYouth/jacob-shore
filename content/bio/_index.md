@@ -9,7 +9,7 @@ I’m Jacob Shore, a senior software engineer with a background in DevOps and in
 I work on backend systems, reliability, and data-heavy workflows.
 I’m currently based in Israel and open to senior engineering roles.
 
-This site is a personal hub. It collects my projects, writing, and ongoing experiments, both professional and otherwise.
+This site is a personal hub for my projects, writing, and ongoing work.
 
 ## What I do
 
