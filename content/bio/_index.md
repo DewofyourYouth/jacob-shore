@@ -15,7 +15,7 @@ This site is a personal hub for my projects, writing, and ongoing work.
 
 My professional work focuses on building and maintaining software systems where clarity and reliability matter. I’ve spent several years working across product and infrastructure boundaries, and I’m comfortable moving between code, tooling, and architecture.
 
-Outside of day jobs, I build small web projects and language-learning tools, and I use writing as a way to think through problems rather than to market myself.
+Outside of my primary work, I build small web projects and language-learning tools. I use writing as a way to think through problems rather than to market myself.
 
 ## Résumé (selected experience)
 
