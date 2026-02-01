@@ -5,7 +5,9 @@ description: "A short intro and a working resume."
 
 ## Short intro
 
-I’m Jacob Shore, a software engineer working primarily in backend and infrastructure-adjacent roles. I build systems that are meant to last, and I tend to document things as I go.
+I’m Jacob Shore, a senior software engineer with a background in DevOps and infrastructure.
+I work on backend systems, reliability, and data-heavy workflows.
+I’m currently based in Israel and open to senior engineering roles.
 
 This site is a personal hub. It collects my projects, writing, and ongoing experiments, both professional and otherwise.
 
