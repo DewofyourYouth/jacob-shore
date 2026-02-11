@@ -48,6 +48,10 @@ params:
     avatar: "/images/avatar.jpg"
   neso:
     branding:
+      favicon_ico: "/images/favicon.ico"
+      apple_touch_icon: "/images/apple-touch-icon.png"
+      pwa_icon_192: "/images/android-chrome-192x192.png"
+      pwa_icon_512: "/images/android-chrome-512x512.png"
       og_image: "img/profile.png"
     enableGitInfo: true
     support_theme_author: true
