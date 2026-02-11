@@ -1,3 +1,11 @@
+- name: "Haki: A Levantine Arabic Practice Game"
+  url: "https://haki-game.com"
+  tagline: "A fun and interactive way to practice Levantine Arabic."
+  card:
+    type: "Language Learning Game"
+    description: "Haki is a game designed to help you practice and improve your Levantine Arabic skills through engaging activities and challenges."
+    image: "/images/projects/haki-game.jpg"
+
 - name: Dew of your Youth
   url: "https://dewofyouryouth.com"
   tagline: "The ponderings of Jacob Shore"
