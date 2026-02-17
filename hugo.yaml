@@ -40,7 +40,7 @@ params:
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
-  now: "Making a game for practicing Levantine Arabic."
+  now: "Fighting exhaustion and overload."
   author:
     name: "Jacob Shore"
     bio: "Software engineer, language learner, and builder of small but stubborn projects."
