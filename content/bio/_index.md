@@ -34,14 +34,15 @@ Outside of my primary work, I build small web projects and language-learning too
 - Shipped incremental improvements rather than large, risky rewrites  
 - Balanced delivery pressure with long-term maintainability  
 
-### Prior background  
-**Intensive textual study and teaching (pre-tech)**
+### Prior background
+
+#### Intensive textual study and teaching (pre-tech)
 
 - Years of disciplined, high-volume study in complex textual systems  
 - Developed strong analytical habits, attention to detail, and tolerance for difficult material  
 - Experience explaining complex ideas clearly and patiently  
 
-<small>This résumé is intentionally selective. I’m happy to share details or code samples in conversation.</small>
+*This résumé is intentionally selective. I’m happy to share details or code samples in conversation.*
 
 ## Hobbies & Interests
 
