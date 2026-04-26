@@ -29,6 +29,7 @@ menus:
       weight: 5
 
 params:
+  description: "The hub of all things Jacob Shore."
   feeds:
     latest:
       - name: "Dew of Your Youth"

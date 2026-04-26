@@ -1,0 +1,95 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }}</title>
+    <link>{{ site.BaseURL }}</link>
+    <description>{{ site.Params.description | default site.Title }}</description>
+    <language>{{ site.Language.LanguageCode }}</language>
+    {{ printf "<atom:link href=%q rel=\"self\" type=\"application/rss+xml\" />" (absURL "index.xml") | safeHTML }}
+
+    {{- $items := slice -}}
+    {{- range $feed := site.Params.feeds.latest -}}
+      {{- $url := $feed.json | default $feed.rss | default "" -}}
+      {{- if $url -}}
+        {{- $res := try (resources.GetRemote $url (dict "headers" (dict "User-Agent" "Mozilla/5.0 (Hugo)"))) -}}
+        {{- if not $res.Err -}}
+          {{- $data := $res.Value | transform.Unmarshal -}}
+          {{- $entries := $data -}}
+          {{- if eq (printf "%T" $data) "map[string]interface {}" -}}
+            {{- with index $data "items" -}}
+              {{- $entries = . -}}
+            {{- else -}}
+              {{- with index $data "data" -}}
+                {{- $entries = . -}}
+              {{- else -}}
+                {{- with index $data "posts" -}}
+                  {{- $entries = . -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+          {{- range $entries -}}
+            {{- $entry := . -}}
+            {{- $title := or (index $entry "title") (index $entry "name") -}}
+            {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "externalUrl") (index $entry "external_url") -}}
+            {{- if not $link -}}
+              {{- $uri := index $entry "uri" -}}
+              {{- if $uri -}}
+                {{- $link = $uri -}}
+                {{- $base := $feed.base_url | default "" -}}
+                {{- if and $base (strings.HasPrefix $uri "/") -}}
+                  {{- $link = printf "%s%s" $base $uri -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+            {{- $dateRaw := or (index $entry "date_published") (index $entry "date") (index $entry "published") (index $entry "published_at") -}}
+            {{- $summary := or (index $entry "summary") (index $entry "description") (index $entry "content_text") -}}
+            {{- if not $summary -}}
+              {{- $summary = index $entry "content" -}}
+            {{- end -}}
+            {{- $date := "" -}}
+            {{- if $dateRaw -}}
+              {{- $asTime := try (time.AsTime $dateRaw) -}}
+              {{- if not $asTime.Err -}}
+                {{- $date = $asTime.Value -}}
+              {{- else -}}
+                {{- $parsed := try (time.Parse "2 January 2006" $dateRaw) -}}
+                {{- if not $parsed.Err -}}
+                  {{- $date = $parsed.Value -}}
+                {{- else -}}
+                  {{- $parsed = try (time.Parse "January 2, 2006" $dateRaw) -}}
+                  {{- if not $parsed.Err -}}
+                    {{- $date = $parsed.Value -}}
+                  {{- end -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+            {{- if and $title $link $date -}}
+              {{- $items = $items | append (dict
+                "title" $title
+                "link" $link
+                "date" $date
+                "summary" $summary
+                "source" $feed.name
+              ) -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $items = sort $items "date" "desc" -}}
+    {{- range $items }}
+    <item>
+      <title>{{ .title | html }}</title>
+      <link>{{ .link }}</link>
+      <guid>{{ .link }}</guid>
+      <pubDate>{{ .date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <category>{{ .source }}</category>
+      {{- with .summary }}
+      <description>{{ . | html }}</description>
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>
