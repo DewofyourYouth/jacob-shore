@@ -5,8 +5,7 @@ description: "A short intro and a working resume."
 
 ## Short intro
 
-I’m Jacob Shore, a senior software engineer with a background in DevOps and infrastructure.
-I work on backend systems, reliability, and data-heavy workflows.
+I’m Jacob Shore, a senior software engineer focused on backend systems, reliability, and data-heavy workflows.
 I’m currently based in Israel and open to senior engineering roles.
 
 This site is a personal hub for my projects, writing, and ongoing work.
@@ -25,14 +24,8 @@ Outside of my primary work, I build small web projects and language-learning too
 
 - Built and maintained production systems used by real users, with an emphasis on reliability and operational clarity  
 - Worked across backend services, internal tooling, and deployment environments  
-- Regularly debugged issues spanning application code, configuration, and infrastructure layers  
+- Regularly debugged issues spanning application code, configuration, and infrastructure layers — including containerized and Kubernetes-based environments  
 - Comfortable owning problems end-to-end, from diagnosis to fix to post-mortem  
-
-### Infrastructure & Operations (overlapping responsibilities)
-
-- Worked with containerized environments and modern deployment workflows  
-- Improved observability, stability, and developer ergonomics in existing systems  
-- Navigated legacy constraints without breaking what already worked  
 - Prioritized boring, durable solutions over clever but fragile ones  
 
 ### Product-facing Engineering
