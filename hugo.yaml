@@ -12,7 +12,7 @@ outputs:
 
 menus:
   main:
-    - name: "Top"
+    - name: "Home"
       url: "/#top"
       weight: 1
     - name: "About"
