@@ -32,8 +32,8 @@ params:
   feeds:
     latest:
       - name: "Dew of Your Youth"
-        json: "https://dewofyouryouth.com/index.json"
-        base_url: "https://dewofyouryouth.com"
+        json: "https://www.dewofyouryouth.com/index.json"
+        base_url: "https://www.dewofyouryouth.com"
       - name: "Daily Derja"
         json: "https://dailyderja.com/index.json"
         base_url: "https://dailyderja.com"
@@ -76,7 +76,7 @@ params:
     home:
       display_mode: "profile"
       profile:
-        avatar_image: "/img/profile.png"
+        avatar_image: "img/profile.png"
 
 build:
   buildStats:

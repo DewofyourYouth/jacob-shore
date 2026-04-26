@@ -50,16 +50,8 @@
 
         {{- $count := 0 -}}
         {{- range $k, $entry := $entries -}}
-          {{- $objectID := index $entry "objectID" -}}
-          {{- $include := true -}}
-          {{- if $objectID -}}
-            {{- $include = strings.HasSuffix $objectID ":0:0" -}}
-          {{- end -}}
-          {{- if not $include -}}
-            {{- continue -}}
-          {{- end -}}
           {{- $title := or (index $entry "title") (index $entry "name") -}}
-          {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "external_url") -}}
+          {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "externalUrl") (index $entry "external_url") -}}
           {{- if not $link -}}
             {{- $uri := index $entry "uri" -}}
             {{- if $uri -}}
