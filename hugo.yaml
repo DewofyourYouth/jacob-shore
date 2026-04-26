@@ -68,7 +68,11 @@ params:
         - name: "YouTube"
           url: "https://www.youtube.com/@dewofyouryouth"
         - name: "Discord"
-          url: "https://discordapp.com/users/dew_of_your_youth"
+          url: "https://discord.com/invite/mKGhJ3eQ"
+        - name: "Telegram"
+          url: "https://t.me/+muANXhcSRCdmMDA0"
+        - name: "WhatsApp"
+          url: "https://whatsapp.com/channel/0029VbBwSpQ7tkjIkExMTA2e"
     home:
       display_mode: "profile"
       profile:
