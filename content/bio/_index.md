@@ -1,57 +1,71 @@
 ---
 title: "Bio"
-description: "A short intro and a working resume."
+description: "A bit about Jacob Shore."
 ---
 
 ## Short intro
 
-I’m Jacob Shore, a senior software engineer focused on backend systems, reliability, and data-heavy workflows.
-I’m currently based in Israel and open to senior engineering roles.
+I’m Jacob Shore — software engineer, ordained Rabbi, and language learner based in Beit Shemesh, Israel. This site is a hub for my projects, writing, and whatever else I’m working on or thinking about.
 
-This site is a personal hub for my projects, writing, and ongoing work.
+Professionally I build backend systems and infrastructure. Outside of that: Arabic, Turkish, Hebrew, history, philosophy, long conversations, and the occasional stubborn side project.
 
 ## What I do
 
-My professional work focuses on building and maintaining software systems where clarity and reliability matter. I’ve spent several years working across product and infrastructure boundaries, and I’m comfortable moving between code, tooling, and architecture.
+**Infrastructure for production systems.** Kubernetes, ArgoCD, Terraform, CI/CD. I’ve run these in constrained, self-hosted environments where things actually have to work. I own deployments from first commit to post-mortem.
 
-Outside of my primary work, I build small web projects and language-learning tools. I use writing as a way to think through problems rather than to market myself.
+**Backend engineering across the stack.** Python (FastAPI, Django, Flask), Go, Node.js. I move between languages and ecosystems based on what the problem needs.
+
+**AI systems integration.** RAG pipelines, semantic retrieval, agent orchestration. I’m approaching this as an engineer — building evaluation tooling, debugging context assembly failures, making retrieval systems reliable enough to ship.
+
+**Language as a professional tool.** Multilingual with a focus on Semitic languages and the broader MENA region. Relevant for multilingual systems, regional work, and security-adjacent contexts.
 
 ## Résumé (selected experience)
 
-### Software Engineer  
-**Backend & Infrastructure-adjacent work**  
-*Several years*
+### Backend & Infrastructure Engineer
+**Security-focused technology firm, Tel Aviv**
+*2022–2025*
 
-- Built and maintained production systems used by real users, with an emphasis on reliability and operational clarity  
-- Worked across backend services, internal tooling, and deployment environments  
-- Regularly debugged issues spanning application code, configuration, and infrastructure layers — including containerized and Kubernetes-based environments  
-- Comfortable owning problems end-to-end, from diagnosis to fix to post-mortem  
-- Prioritized boring, durable solutions over clever but fragile ones  
+- Designed, deployed, and operated Kubernetes-based production systems in a security-constrained, self-hosted environment
+- Implemented GitOps workflows using ArgoCD and Terraform for infrastructure-as-code across multiple services
+- Led delivery of a customer-facing deployment portal — reduced manual onboarding effort by 60%
+- Owned backend services across Python, Go, and Node.js end-to-end
+- Defined engineering standards around testing, deployment, and operational practices
 
-### Product-facing Engineering
+### Backend Engineer
+**IronScales, Ramat Gan**
+*2021–2022*
 
-- Collaborated with non-engineers to translate vague requirements into concrete behavior  
-- Shipped incremental improvements rather than large, risky rewrites  
-- Balanced delivery pressure with long-term maintainability  
+- Built Django/Python APIs for a high-availability enterprise security platform
+- Worked with infrastructure on deployment, scaling, and reliability on AWS
+
+### Backend & Infrastructure Engineer
+**DatAlign, Beit Shemesh**
+*2019–2021*
+
+- Designed CI/CD pipelines automating test and deployment workflows
+- Built Docker-based deployments for HIPAA-compliant healthcare infrastructure
+- Introduced infrastructure-as-code practices across environments
 
 ### Prior background
 
-#### Intensive textual study and teaching (pre-tech)
+Years of intensive textual study and teaching developed analytical habits, attention to detail, and the ability to explain complex ideas clearly — more useful in engineering than it might sound.
 
-- Years of disciplined, high-volume study in complex textual systems  
-- Developed strong analytical habits, attention to detail, and tolerance for difficult material  
-- Experience explaining complex ideas clearly and patiently  
+*This résumé is intentionally selective. Happy to share details or code samples in conversation.*
 
-*This résumé is intentionally selective. I’m happy to share details or code samples in conversation.*
+## Languages
 
-## Hobbies & Interests
+| Language | Level |
+|----------|-------|
+| English  | Native |
+| Hebrew   | C1 |
+| Yiddish  | B1 |
+| Arabic   | B1 |
+| Dutch    | A1 |
 
-- Language learning and dialect study (Arabic, Turkish, Hebrew)  
-- Writing and personal documentation systems  
-- Building small, focused web projects  
-- Learning for its own sake, especially through difficult material  
-- Systems thinking and tool design  
-- Reading history, philosophy, and primary sources  
-- Walking, thinking, and unstructured exploration  
-- Long-form conversations and careful argument  
-- Music as background infrastructure rather than entertainment  
+## Interests
+
+- Language learning
+- Writing — as a way to think, not to publish
+- History, philosophy, primary sources
+- Systems thinking and tool design
+- Long-form conversations and careful argument
