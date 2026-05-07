@@ -64,13 +64,19 @@
         <p class="text-neso-fg2 text-lg not-last:mb-6">{{ . }}</p>
       {{- end }}
 
-      {{- if $author.location }}
-        <ul class="flex flex-wrap gap-3 text-sm text-neso-fg3">
+      {{- if or $author.location true }}
+        <ul class="flex flex-wrap gap-3 text-sm text-neso-fg3 not-last:mb-6">
           {{- with $author.location }}
             <li class="px-3 py-2 rounded-full border border-neso-deco3">{{ . }}</li>
           {{- end }}
+          <li>
+            <a href="/bio/" style="text-decoration: none" class="flex items-center gap-1 px-3 py-2 rounded-full border border-neso-deco3 text-neso-splash hover:border-neso-splash focus-visible:border-neso-splash transition-colors">
+              Read more in Bio →
+            </a>
+          </li>
         </ul>
       {{- end }}
+
     </section>
   {{- end }}
 

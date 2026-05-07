@@ -1,6 +1,8 @@
 ---
 title: "Bio"
 description: "A bit about Jacob Shore."
+neso:
+  show_toc: true
 ---
 
 ## Short intro
@@ -52,15 +54,15 @@ Years of intensive textual study and teaching developed analytical habits, atten
 
 *This résumé is intentionally selective. Happy to share details or code samples in conversation.*
 
-## Languages
+## Spoken Languages
 
-| Language | Level |
-|----------|-------|
+| Language | Level  |
+| -------- | ------ |
 | English  | Native |
-| Hebrew   | C1 |
-| Yiddish  | B1 |
-| Arabic   | B1 |
-| Dutch    | A1 |
+| Hebrew   | C1     |
+| Yiddish  | B1     |
+| Arabic   | B1     |
+| Dutch    | A1     |
 
 ## Interests
 

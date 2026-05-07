@@ -109,35 +109,5 @@
         {{- end }}
 
         {{- partial "home/social_icons.html" (dict "align" "center") }}
-
-        {{- with .link_btns }}
-            <div class="not-last:mb-r-lg flex flex-wrap justify-center gap-3">
-                {{- range . }}
-                    {{- $siteHost   := (urls.Parse site.BaseURL).Host }}
-                    {{- $u          := urls.Parse .url }}
-                    {{- $isExternal := and $u.IsAbs (ne $u.Host $siteHost) }}
-                    <a class="btn flex flex-nowrap gap-1 items-center"
-                       href="{{ .url | safeURL }}"
-                       title="{{ .label }}"
-                       {{- if $isExternal }}
-                       {{- if site.Params.neso.ext_link_no_opener_referrer }}
-                       rel="external noreferrer noopener"
-                       {{- end }}
-                       {{- if site.Params.neso.ext_link_new_window }}
-                       target="_blank"
-                       {{- end }}
-                       {{- end -}}
-                    >
-                        <span>{{ .label }}</span>
-                    
-                        {{- if and $isExternal site.Params.neso.ext_link_indicator }}
-                            <svg class="shrink-0 grow-0 size-[1em] stroke-2 stroke-current fill-none">
-                                <use href="{{ $uiIcons.RelPermalink }}#external-link" />
-                            </svg>
-                        {{- end }}
-                    </a>
-                {{- end }}
-            </div>
-        {{- end }}
     </div>
 {{- end -}}
