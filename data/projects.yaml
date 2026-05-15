@@ -1,3 +1,11 @@
+- name: "Job Tracker AI"
+  url: "https://github.com/DewofyourYouth/job_tracker"
+  tagline: "AI-powered job application tracking."
+  card:
+    type: "AI Productivity Tool"
+    description: "An AI-powered tool to help you track and manage your job applications efficiently."
+    image: "/images/projects/job-tracker.jpg"
+
 - name: "Haki: A Levantine Arabic Practice Game"
   url: "https://haki-game.com"
   tagline: "A fun and interactive way to practice Levantine Arabic."
