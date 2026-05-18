@@ -45,7 +45,7 @@ params:
   author:
     name: "Jacob Shore"
     bio: "Software engineer, language learner, and builder of small but stubborn projects."
-    location: "Beit Shemesh, Israel"
+    location: "Bet Shemesh, Israel"
     avatar: "/images/avatar.jpg"
   neso:
     branding:
