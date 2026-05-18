@@ -1,5 +1,5 @@
 - name: "Job Tracker AI"
-  url: "https://github.com/DewofyourYouth/job_tracker"
+  url: "/job-tracker/"
   tagline: "AI-powered job application tracking."
   card:
     type: "AI Productivity Tool"
