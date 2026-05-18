@@ -20,7 +20,7 @@
   card:
     type: "Writing"
     description: "My thoughts on life, tech, faith, heritage, and all the nerdy things I like to ponder."
-    image: "/images/projects/dew-of-your-youth.png"
+    image: "/images/projects/dew-of-your-youth.jpg"
 
 - name: "Daily Derja"
   url: "https://dailyderja.com"
