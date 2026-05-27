@@ -27,6 +27,9 @@ menus:
     - name: "Bio"
       url: "/bio/"
       weight: 5
+    - name: "Hire Me"
+      url: "/hire/"
+      weight: 6
 
 params:
   description: "The hub of all things Jacob Shore."
