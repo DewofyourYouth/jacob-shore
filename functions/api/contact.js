@@ -18,10 +18,10 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: "Invalid request body." }, 400);
   }
 
-  const name           = (body.name           || "").trim();
-  const email          = (body.email          || "").trim();
-  const message        = (body.message        || "").trim();
-  const turnstileToken = (body.turnstileToken  || "").trim();
+  const name = (body.name || "").trim();
+  const email = (body.email || "").trim();
+  const message = (body.message || "").trim();
+  const turnstileToken = (body.turnstileToken || "").trim();
 
   if (!name || !email || !message) {
     return json({ ok: false, error: "All fields are required." }, 422);
@@ -35,18 +35,24 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: "CAPTCHA token missing." }, 422);
   }
 
-  const tsRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      secret:   env.TURNSTILE_SECRET_KEY,
-      response: turnstileToken,
-      remoteip: request.headers.get("CF-Connecting-IP"),
-    }),
-  });
+  const tsRes = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        secret: env.TURNSTILE_SECRET_KEY,
+        response: turnstileToken,
+        remoteip: request.headers.get("CF-Connecting-IP"),
+      }),
+    },
+  );
   const tsData = await tsRes.json();
   if (!tsData.success) {
-    return json({ ok: false, error: "CAPTCHA verification failed. Please try again." }, 422);
+    return json(
+      { ok: false, error: "CAPTCHA verification failed. Please try again." },
+      422,
+    );
   }
 
   if (!env.RESEND_API_KEY || !env.CONTACT_EMAIL) {
@@ -61,12 +67,12 @@ export async function onRequestPost(context) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from:     "contact@jacob-shore.com",
-      to:       env.CONTACT_EMAIL,
+      from: "contact@jacob-shore.com",
+      to: env.CONTACT_EMAIL,
       reply_to: email,
-      subject:  `Contact from ${name}`,
-      text:     `Name: ${name}\nEmail: ${email}\n\n${message}`,
-      html:     `<p><strong>Name:</strong> ${esc(name)}</p>
+      subject: `Contact from ${name} (via jacob-shore.com)`,
+      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      html: `<p><strong>Name:</strong> ${esc(name)}</p>
 <p><strong>Email:</strong> <a href="mailto:${esc(email)}">${esc(email)}</a></p>
 <hr>
 <p>${esc(message).replace(/\n/g, "<br>")}</p>`,
@@ -76,7 +82,10 @@ export async function onRequestPost(context) {
   if (!res.ok) {
     const detail = await res.text();
     console.error("Resend error", res.status, detail);
-    return json({ ok: false, error: "Failed to send email. Please try again." }, 502);
+    return json(
+      { ok: false, error: "Failed to send email. Please try again." },
+      502,
+    );
   }
 
   return json({ ok: true });
