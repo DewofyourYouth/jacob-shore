@@ -40,6 +40,12 @@
         ></textarea>
       </div>
 
+      <div
+        class="cf-turnstile"
+        data-sitekey="{{ site.Params.turnstile.site_key }}"
+        data-theme="auto"
+      ></div>
+
       <div id="cf-status" class="hidden text-sm px-4 py-3 rounded-xl border" aria-live="polite"></div>
 
       <div>
@@ -56,17 +62,22 @@
   </form>
 </div>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 (function () {
-  var form    = document.getElementById('contact-form');
-  var btn     = document.getElementById('cf-submit');
-  var status  = document.getElementById('cf-status');
+  var form   = document.getElementById('contact-form');
+  var btn    = document.getElementById('cf-submit');
+  var status = document.getElementById('cf-status');
 
   function showStatus(ok, msg) {
     status.textContent = msg;
     status.className = ok
       ? 'text-sm px-4 py-3 rounded-xl border border-green-500/40 bg-green-500/10 text-green-700 dark:text-green-400'
       : 'text-sm px-4 py-3 rounded-xl border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-400';
+  }
+
+  function resetTurnstile() {
+    if (window.turnstile) window.turnstile.reset();
   }
 
   form.addEventListener('submit', function (e) {
@@ -81,6 +92,13 @@
       return;
     }
 
+    var tokenInput = document.querySelector('input[name="cf-turnstile-response"]');
+    var token = tokenInput ? tokenInput.value : '';
+    if (!token) {
+      showStatus(false, 'Please complete the CAPTCHA.');
+      return;
+    }
+
     btn.disabled    = true;
     btn.textContent = 'Sending…';
     status.className = 'hidden';
@@ -88,19 +106,22 @@
     fetch('/api/contact', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ name: name, email: email, message: message }),
+      body:    JSON.stringify({ name: name, email: email, message: message, turnstileToken: token }),
     })
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data.ok) {
           showStatus(true, 'Message sent — I\'ll be in touch soon.');
           form.reset();
+          resetTurnstile();
         } else {
           showStatus(false, data.error || 'Something went wrong. Please try again.');
+          resetTurnstile();
         }
       })
       .catch(function () {
         showStatus(false, 'Network error. Please check your connection and try again.');
+        resetTurnstile();
       })
       .finally(function () {
         btn.disabled    = false;

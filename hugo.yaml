@@ -33,6 +33,8 @@ menus:
 
 params:
   description: "The hub of all things Jacob Shore."
+  turnstile:
+    site_key: "0x4AAAAAADXKJhH82MPoyOFb"
   feeds:
     latest:
       - name: "Dew of Your Youth"
