@@ -56,5 +56,11 @@
       </style>
   </noscript>
 {{ else }}
-  <link rel="stylesheet" href="/css/style.css">
+  {{/* Prebuilt CSS is served from a fixed path, so append a content hash to
+       bust browser/CDN caches whenever the stylesheet actually changes. */}}
+  {{- $cssVer := "" -}}
+  {{- with (readFile "static/css/style.css") -}}
+    {{- $cssVer = substr (crypto.SHA256 .) 0 12 -}}
+  {{- end -}}
+  <link rel="stylesheet" href="/css/style.css{{ with $cssVer }}?v={{ . }}{{ end }}">
 {{ end }}
