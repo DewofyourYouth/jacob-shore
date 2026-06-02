@@ -10,9 +10,15 @@
 
   /* Define or override Tailwind's theme variables (design tokens).
      * It's special – auto-generates utility classes like `bg-my-default`.
-     * Example: 
+     * Example:
      * --color-my-default: #bada55;
      */
+
+  /* Editorial type system — generates `font-display`, `font-body`;
+     `font-mono` overrides Tailwind's default mono (intentional, on-brand). */
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, SFMono-Regular, "SF Mono", monospace;
 }
 
 @layer theme {
@@ -46,26 +52,36 @@
      * Example: 
      * .headline { font-size: 2rem; }
      */
+  /* A proper thought cloud: rounded body + two trailing bubbles that
+     drift down toward the head (placed to the bubble's lower-right). */
   .thought-bubble {
-    background: var(--color-neso-bg1);
-    border: 1px solid var(--color-neso-deco3);
-    border-radius: 9999px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
-    max-width: 18rem;
+    background: var(--color-neso-bg0);
+    border: 1px solid var(--color-neso-deco2);
+    border-radius: 1.4rem 1.4rem 1.4rem 0.5rem;
+    box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.28);
     white-space: normal;
     position: relative;
   }
+  .thought-bubble::before,
   .thought-bubble::after {
     content: "";
     position: absolute;
-    left: 1.25rem;
-    bottom: -6px;
-    width: 12px;
-    height: 12px;
+    right: 14px;
     border-radius: 9999px;
-    background: var(--color-neso-bg1);
-    border: 1px solid var(--color-neso-deco3);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    background: var(--color-neso-bg0);
+    border: 1px solid var(--color-neso-deco2);
+    box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.22);
+  }
+  .thought-bubble::before {
+    width: 13px;
+    height: 13px;
+    bottom: -11px;
+  }
+  .thought-bubble::after {
+    width: 7px;
+    height: 7px;
+    right: 8px;
+    bottom: -22px;
   }
 
   a.project-card-link,
@@ -98,5 +114,302 @@
      */
   .home-section {
     scroll-margin-top: 6rem;
+  }
+
+  /* Keep pixel-art portraits crisp instead of smoothing on scale. */
+  .pixel-avatar {
+    image-rendering: pixelated;
+  }
+}
+
+/* ============================================================
+ * ALMANAC — editorial home page
+ * A typeset, letterpress-flavored layout built on neso's tokens
+ * so it tracks light/dark automatically.
+ * ============================================================ */
+
+@layer base {
+  .almanac {
+    position: relative;
+    z-index: 0;
+    font-family: var(--font-body);
+    font-optical-sizing: auto;
+  }
+
+  /* Faint paper grain over the whole viewport, behind the content. */
+  .almanac::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  :root[data-color-scheme="dark"] .almanac::before {
+    opacity: 0.07;
+  }
+
+  .almanac ::selection {
+    background: var(--color-neso-splash);
+    color: var(--color-neso-bg0);
+  }
+}
+
+@layer components {
+  /* ---- Mastheads & section markers ---- */
+  .masthead-line {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-neso-fg3);
+  }
+
+  .display-name {
+    font-family: var(--font-display);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    color: var(--color-neso-fg0);
+    font-size: clamp(3.25rem, 13vw, 8.5rem);
+    font-variation-settings: "opsz" 144;
+  }
+
+  .lede {
+    font-family: var(--font-body);
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--color-neso-fg2);
+    max-width: 34ch;
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-neso-splash);
+  }
+
+  .section-marker {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .section-marker .num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--color-neso-splash);
+  }
+  .section-marker .label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    line-height: 1;
+    color: var(--color-neso-fg1);
+    font-variation-settings: "opsz" 72;
+  }
+  .section-marker .rule {
+    flex: 1 1 auto;
+    height: 0;
+    border-top: 1px solid var(--color-neso-deco1);
+    transform: translateY(-0.28em);
+  }
+
+  /* ---- Statement (about) ---- */
+  .statement {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    color: var(--color-neso-fg1);
+    font-variation-settings: "opsz" 72;
+  }
+  .statement em {
+    font-style: italic;
+    color: var(--color-neso-splash);
+  }
+
+  /* ---- Projects: typeset table of contents ---- */
+  .cat-row {
+    display: grid;
+    gap: 1.25rem 2rem;
+    align-items: center;
+    padding: 1.85rem 0;
+    border-top: 1px solid var(--color-neso-deco2);
+    text-decoration: none !important;
+  }
+  .cat-row:last-of-type {
+    border-bottom: 1px solid var(--color-neso-deco2);
+  }
+  @media (min-width: 768px) {
+    .cat-row {
+      grid-template-columns: 1fr clamp(7rem, 17vw, 10.5rem);
+    }
+  }
+
+  .cat-entry {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+  }
+  .cat-num {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-neso-fg3);
+    transition: color 0.3s ease;
+  }
+  .cat-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 4.4vw, 2.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--color-neso-fg1);
+    font-variation-settings: "opsz" 72;
+    transition: color 0.3s ease;
+  }
+  /* Table-of-contents leader dots */
+  .cat-leaders {
+    flex: 1 1 auto;
+    align-self: flex-end;
+    height: 0;
+    margin-bottom: 0.42em;
+    border-bottom: 1.5px dotted var(--color-neso-deco1);
+    transition: border-color 0.3s ease;
+  }
+  .cat-type {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-neso-fg3);
+    transition: color 0.3s ease;
+  }
+  .cat-arrow {
+    flex: 0 0 auto;
+    transform: translateX(-0.15rem);
+    color: var(--color-neso-fg3);
+    transition:
+      transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.3s ease,
+      opacity 0.3s ease;
+    opacity: 0.55;
+  }
+  .cat-tag {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--color-neso-fg2);
+    margin-top: 0.5rem;
+    max-width: 52ch;
+  }
+
+  /* Framed preview plate */
+  .cat-plate {
+    overflow: hidden;
+    border: 1px solid var(--color-neso-deco2);
+    border-radius: 2px;
+    background: var(--color-neso-bg2);
+    box-shadow:
+      0 1px 0 var(--color-neso-deco3),
+      0 18px 30px -22px rgba(0, 0, 0, 0.45);
+    transform: rotate(-1.1deg);
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.45s ease;
+  }
+  .cat-plate img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .cat-plate.is-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 10;
+    color: var(--color-neso-fg3);
+  }
+
+  /* Hover / focus choreography for a whole catalogue entry */
+  .cat-row:hover .cat-name,
+  .cat-row:focus-visible .cat-name {
+    color: var(--color-neso-splash);
+  }
+  .cat-row:hover .cat-num,
+  .cat-row:hover .cat-type,
+  .cat-row:focus-visible .cat-num,
+  .cat-row:focus-visible .cat-type {
+    color: var(--color-neso-fg1);
+  }
+  .cat-row:hover .cat-leaders,
+  .cat-row:focus-visible .cat-leaders {
+    border-color: var(--color-neso-splash);
+  }
+  .cat-row:hover .cat-arrow,
+  .cat-row:focus-visible .cat-arrow {
+    transform: translateX(0.25rem);
+    color: var(--color-neso-splash);
+    opacity: 1;
+  }
+  .cat-row:hover .cat-plate,
+  .cat-row:focus-visible .cat-plate {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow:
+      0 1px 0 var(--color-neso-deco3),
+      0 28px 44px -24px rgba(0, 0, 0, 0.5);
+  }
+  .cat-row:hover .cat-plate img,
+  .cat-row:focus-visible .cat-plate img {
+    transform: scale(1.04);
+  }
+
+  .stamp {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--color-neso-fg3);
+    border: 1px solid var(--color-neso-deco2);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+  }
+}
+
+@layer utilities {
+  /* Staggered page-load reveal; set delay per element with `--d`. */
+  @keyframes almanac-rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  [data-reveal] {
+    opacity: 0;
+    animation: almanac-rise 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    animation-delay: var(--d, 0s);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      animation: none;
+    }
+    .cat-plate {
+      transform: none;
+    }
   }
 }

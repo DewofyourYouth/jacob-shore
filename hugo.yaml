@@ -82,7 +82,7 @@ params:
     home:
       display_mode: "profile"
       profile:
-        avatar_image: "img/new_profile.png"
+        avatar_image: "img/jacob_pixel_512.png"
 
 build:
   buildStats:

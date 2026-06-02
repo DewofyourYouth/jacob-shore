@@ -2,6 +2,7 @@
   "name": "jacob-shore",
   "private": true,
   "dependencies": {
-    "tailwindcss": "^3.4.17"
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
   }
 }
