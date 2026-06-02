@@ -1,0 +1,159 @@
+{{- /*
+  Project override of the neso theme's schema_json.html.
+  The home Person block is enriched (jobTitle, address, languages, topics,
+  a real image, and an @id); the BreadcrumbList/BlogPosting branches below are
+  unchanged from the theme.
+*/ -}}
+{{- $brandingImgs := partialCached "_funcs/get-branding-assets.html" . }}
+
+{{- if .IsHome }}
+    {{- /* A real portrait for the Person (the theme's favicon fallback resolves to "/"). */}}
+    {{- $personImg := "" }}
+    {{- with resources.Get "img/jacob_pixel_512.png" }}
+        {{- $personImg = (. | fingerprint).Permalink }}
+    {{- else }}
+        {{- $personImg = index $brandingImgs "og_image" }}
+    {{- end }}
+    <script type="application/ld+json">
+        {
+        "@context"     : "https://schema.org",
+        "@type"        : "Person",
+        "@id"          : {{ printf "%s#person" site.Home.Permalink }},
+        "name"         : {{ site.Title }},
+        "url"          : {{ site.Home.Permalink }},
+        "description"  : {{ site.Params.neso.seo.site_description
+            | default site.Params.description
+            | default .Description
+            | plainify | strings.TrimSpace | truncate 180 }},
+        "image"        : {{ $personImg }},
+        "jobTitle"     : "Software Engineer",
+        "address"      :
+            {
+            "@type"            : "PostalAddress",
+            "addressLocality"  : "Bet Shemesh",
+            "addressCountry"   : "IL"
+            },
+        "knowsLanguage": ["English", "Hebrew", "Arabic", "Turkish"],
+        "knowsAbout"   : ["Backend engineering", "Kubernetes", "Cloud infrastructure", "CI/CD", "AI integration", "Retrieval-augmented generation"],
+        "sameAs"       :
+            [
+            {{- if site.Params.neso.seo.schema.same_as }}
+            {{ range $i, $e := site.Params.neso.seo.schema.same_as -}}
+            {{- if $i -}},
+            {{ end -}}
+            {{- trim $e " " }}
+            {{- end -}}
+            {{- else }}
+            {{ range $i, $e := site.Params.neso.social.links -}}
+            {{- if $i -}},
+            {{ end -}}
+            {{- trim $e.url " " | safeURL }}
+            {{- end -}}
+            {{- end }}
+            ]
+        }
+    </script>
+
+{{- else if (or .IsPage .IsSection (in (slice "taxonomy" "term") .Kind)) }}
+
+    {{- $anc := .Ancestors }}
+    {{- $anc = $anc.Reverse }}
+    {{- $ancNoHome := where $anc "IsHome" false }}
+
+    {{- /* Breadcrumb List */}}
+    <script type="application/ld+json">
+        {
+        "@context"             : "https://schema.org",
+        "@type"                : "BreadcrumbList",
+        "itemListElement"      :
+            [
+            {{- range $i, $p := $ancNoHome }}
+            {{- if $i -}},
+            {{ end -}}
+            {
+            "@type"            : "ListItem",
+            "position"         : {{- add 1 $i -}},
+            "name"             : {{ $p.Title | default $p.Name }},
+            "item"             : {{ $p.Permalink | safeHTML }}
+            }
+            {{- end -}}
+            {{- /* self-page addition (last item) */ -}}
+            {{- if gt (len $ancNoHome) 0 -}},
+            {{ end -}}
+            {
+            "@type"            : "ListItem",
+            "position"         : {{- add (len $ancNoHome) 1 -}},
+            "name"             : {{ .Title | default .Name }},
+            "item"             : {{ .Permalink | safeHTML }}
+            }]
+        }
+    </script>
+
+    {{- if .IsPage }}
+    <script type="application/ld+json">
+        {
+        "@context"             : "https://schema.org",
+        "@type"                : "BlogPosting",
+        "headline"             : {{ .Title | plainify }},
+        "name"                 : {{ .Title | plainify }},
+        "description"          : {{ with .Description | plainify | strings.TrimSpace }}{{ . }}{{ else }}{{ .Summary | plainify | strings.TrimSpace }}{{ end -}},
+        "keywords"             : [
+            {{- if .Params.keywords -}}
+            {{- range $i, $e := .Params.keywords -}}{{- if $i -}}, {{ end -}}{{- $e -}}{{- end -}}
+            {{- else -}}
+            {{- range $i, $e := .Params.tags -}}{{- if $i -}}, {{ end -}}{{- $e -}}{{- end -}}
+            {{- end -}}
+        ],
+        "articleBody"          : {{ .Content | safeJS | htmlUnescape | plainify }},
+        "wordCount"            : "{{ .WordCount }}",
+        "inLanguage"           : {{ .Language.Lang | default "en-US" }},
+        {{- $images := partial "_funcs/get-page-images" . -}}
+        {{- with index $images 0 }}
+        "image"                : {{ .Permalink }},
+        {{- end }}
+        "datePublished"        : {{ .PublishDate }},
+        "dateModified"         : {{ .Lastmod }},
+        {{- $authors := partial "_funcs/get-author.html" . -}}
+        {{- if gt (len $authors) 0 }}
+        "author"               :
+            {{- if gt (len $authors) 1 }}
+            [
+            {{- range $i, $name := $authors }}
+            {{- if $i -}},
+            {{ end -}}
+            {
+            "@type"            : "Person",
+            "name"             : {{ $name }}
+            }
+            {{- end -}}
+            ],
+            {{- else }}
+            {
+            "@type"            : "Person",
+            "name"             : {{ index $authors 0 }}
+            },
+            {{- end -}}
+        {{- end }}
+        "mainEntityOfPage"     :
+            {
+            "@type"            : "WebPage",
+            "@id"              : {{ .Permalink | safeHTML }}
+            },
+        "publisher"            :
+            {
+            "@type"            : "{{- (site.Params.neso.seo.schema.publisher_type | default "Person") | title -}}",
+            "name"             : {{ site.Title }},
+            "logo"             :
+                {
+                "@type"        : "ImageObject",
+                "url"          : {{ index $brandingImgs "logo_image"
+                    | default (index $brandingImgs "favicon_svg")
+                    | default (index $brandingImgs "og_image")
+                    | absURL }}
+                }
+            }
+        }
+    </script>
+    {{- end }}
+
+{{- end -}}

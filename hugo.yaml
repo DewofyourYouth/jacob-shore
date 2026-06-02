@@ -3,6 +3,7 @@ languageCode: "en-us"
 title: "Jacob Shore"
 description: "The hub of all things Jacob Shore."
 theme: "neso"
+enableRobotsTXT: true
 
 outputs:
   home:
@@ -59,6 +60,21 @@ params:
       pwa_icon_192: "/images/android-chrome-192x192.png"
       pwa_icon_512: "/images/android-chrome-512x512.png"
       og_image: "img/jacob_og_1200x630.png"
+    seo:
+      site_description: "Jacob Shore — software engineer, ordained rabbi, and polyglot in Bet Shemesh, Israel. Backend systems, Kubernetes and cloud infrastructure, and AI integration, plus writing and language-learning projects."
+      site_keywords:
+        - "Jacob Shore"
+        - "software engineer"
+        - "backend engineer"
+        - "Kubernetes"
+        - "cloud infrastructure"
+        - "AI integration"
+        - "RAG"
+        - "Bet Shemesh"
+        - "Israel"
+        - "polyglot"
+      schema:
+        publisher_type: "Person"
     enableGitInfo: true
     support_theme_author: true
     social:
