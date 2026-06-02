@@ -52,13 +52,13 @@
         </div>
 
         {{- with $avatarURL }}
-          <div data-reveal style="--d:.15s" class="relative justify-self-center lg:justify-self-end">
+          <div data-reveal style="--d:.15s" class="relative mt-12 justify-self-center lg:mt-0 lg:justify-self-end">
             <figure class="size-40 md:size-52 overflow-hidden rounded-full bg-neso-bg2 ring-1 ring-neso-deco1 ring-offset-8 ring-offset-neso-bg1 rotate-2">
               <img class="pixel-avatar size-full object-cover object-top" src="{{ . }}" width="208" height="208"
                    alt="{{ $author.name | default site.Title }}" fetchpriority="high">
             </figure>
             {{- with site.Params.now }}
-              <span class="thought-bubble absolute -top-12 -left-4 md:-left-10 max-w-[15rem] px-4 py-2.5 text-xs text-neso-fg2">
+              <span class="thought-bubble absolute -top-11 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:-left-10 lg:-top-12 max-w-[15rem] px-4 py-2.5 text-xs text-neso-fg2">
                 <span class="inline-flex items-center gap-2">
                   <span class="size-2.5 shrink-0 rounded-full bg-emerald-400 ring-2 ring-neso-bg0"></span>
                   <span class="font-mono leading-snug tracking-tight">{{ . | truncate 50 }}</span>

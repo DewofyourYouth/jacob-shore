@@ -83,6 +83,20 @@
     right: 8px;
     bottom: -22px;
   }
+  /* In the stacked layout (avatar centered) the bubble sits directly above
+     the head, so drop the tail straight down from the bubble's center. */
+  @media (max-width: 1023.98px) {
+    .thought-bubble::before {
+      right: auto;
+      left: 50%;
+      margin-left: -6.5px;
+    }
+    .thought-bubble::after {
+      right: auto;
+      left: 50%;
+      margin-left: -3.5px;
+    }
+  }
 
   a.project-card-link,
   a.project-card-link * {
