@@ -58,7 +58,7 @@ params:
       apple_touch_icon: "/images/apple-touch-icon-180.png"
       pwa_icon_192: "/images/android-chrome-192x192.png"
       pwa_icon_512: "/images/android-chrome-512x512.png"
-      og_image: "img/new_profile.png"
+      og_image: "img/jacob_og_1200x630.png"
     enableGitInfo: true
     support_theme_author: true
     social:
