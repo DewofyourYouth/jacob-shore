@@ -1,0 +1,47 @@
+{{- define "main" }}
+  {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+  <div class="almanac layout last:expansive">
+
+    <section class="max-w-2xl pt-6 md:pt-10">
+      <p class="kicker" data-reveal>Error 404 — Not in the ledger</p>
+      <h1 class="display-name mt-4" data-reveal style="--d:.08s">404</h1>
+      <p class="lede max-w-[48ch] mt-7" data-reveal style="--d:.18s">
+        This page isn't in the index. Either it was never bound into the book,
+        or it's been quietly torn out — honestly, could go either way.
+      </p>
+    </section>
+
+    <section class="mt-14 md:mt-20">
+      <div class="section-marker mb-2" data-reveal style="--d:.26s">
+        <span class="label">Try the index</span>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+
+      {{- $links := slice
+        (dict "name" "Home" "url" "/" "note" "The front page")
+        (dict "name" "Projects" "url" "/#projects" "note" "What I'm building")
+        (dict "name" "Bio" "url" "/bio/" "note" "Background & résumé")
+        (dict "name" "Hire Me" "url" "/hire/" "note" "Work with me")
+      -}}
+      <nav>
+        {{- range $i, $link := $links }}
+          <a class="cat-row is-textonly group" href="{{ $link.url }}"
+             data-reveal style="--d:{{ add 0.32 (mul $i 0.06) }}s">
+            <div class="cat-entry">
+              <span class="cat-num">{{ printf "%02d" (add $i 1) }}</span>
+              <h3 class="cat-name">{{ $link.name }}</h3>
+              <span class="cat-leaders hidden md:block" aria-hidden="true"></span>
+              <span class="cat-type hidden md:inline">{{ $link.note }}</span>
+              <svg class="cat-arrow size-4 stroke-2 stroke-current fill-none" aria-hidden="true">
+                <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+              </svg>
+            </div>
+          </a>
+        {{- end }}
+      </nav>
+    </section>
+
+  </div>
+
+{{- end -}}
