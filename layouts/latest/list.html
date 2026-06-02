@@ -1,18 +1,12 @@
 {{- define "main" -}}
-  <section class="layout not-last:mb-r-xl">
-    {{- if .Title }}
-      <header class="not-last:mb-r-lg">
-        <h1 class="font-bold text-3xl md:text-4xl text-neso-fg1">
-          {{ .Title }}
-        </h1>
-        {{- with .Description }}
-          <p class="text-neso-fg2 mt-2">{{ . }}</p>
-        {{- end }}
-      </header>
-    {{- end }}
+  {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . -}}
+
+  <div class="almanac layout">
+
+    {{- partial "almanac-head.html" (dict "page" . "kicker" "Jacob Shore — Dispatches") }}
 
     {{- if .Content }}
-      <div class="cnt not-last:mb-r-xl">
+      <div class="cnt almanac-prose not-last:mb-r-xl">
         {{- if not site.Params.neso.page.disable_heading_links }}
           {{- partial "content/heading_links.html" .Content }}
         {{- else }}
@@ -20,7 +14,6 @@
         {{- end }}
       </div>
     {{- end }}
-  </section>
 
   {{- $items := slice -}}
   {{- $errors := slice -}}
@@ -115,65 +108,51 @@
   {{- end }}
 
   {{- $items = sort $items "date" "desc" -}}
-  {{- $items = first 10 $items -}}
+  {{- $items = first 12 $items -}}
 
-  <section class="layout">
-    <header class="border-t border-t-neso-deco3 pt-r-xl mb-r-lg">
-      <h2 class="font-semibold text-neso-fg1 text-2xl md:text-3xl">Latest</h2>
-    </header>
-
-    {{- $feedStyles := dict
-      "Daily Derja" (dict "badge" "bg-emerald-600/15 text-emerald-800 border-emerald-600/40 dark:text-emerald-300" "card" "border-emerald-600/30")
-      "Türk Defter" (dict "badge" "bg-indigo-600/15 text-indigo-800 border-indigo-600/40 dark:text-indigo-300" "card" "border-indigo-600/30")
-      "Dew of Your Youth" (dict "badge" "bg-amber-600/15 text-amber-800 border-amber-600/40 dark:text-amber-300" "card" "border-amber-600/30")
-    -}}
-
-    {{- if gt (len $items) 0 }}
-      <div class="grid gap-6 grid-cols-1">
-        {{- range $items }}
-          {{- $item := . -}}
-          {{- $style := index $feedStyles $item.source | default (dict "badge" "bg-neso-bg3 text-neso-fg2 border-neso-deco3" "card" "border-neso-deco3") -}}
-          <article class="border rounded-2xl p-6 bg-neso-bg2 {{ index $style "card" }}">
-            {{- with $item.image }}
-              <a href="{{ $item.link }}" class="block overflow-hidden rounded-xl border border-neso-deco3 bg-neso-bg1 mb-4">
-                <div class="aspect-[16/9] bg-neso-bg3">
-                  <img class="h-full w-full object-cover" src="{{ . }}" alt="Featured image for {{ $item.title }}">
-                </div>
-              </a>
-            {{- end }}
-            <header class="not-last:mb-3">
-              <h3 class="text-xl font-semibold text-neso-fg1">
-                <a class="hover:text-neso-splash focus-visible:text-neso-splash" href="{{ $item.link }}">
-                  {{ $item.title }}
-                </a>
-              </h3>
-              <p class="text-neso-fg3 text-sm mt-1">
-                <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs {{ index $style "badge" }}">{{ $item.source }}</span>
-                <span class="ms-2">{{ $item.date | time.Format "January 2, 2006" }}</span>
-              </p>
-            </header>
-            {{- with $item.summary }}
-              <p class="text-neso-fg2">{{ . }}</p>
-            {{- end }}
-          </article>
-        {{- end }}
+    <section class="mt-14 md:mt-20">
+      <div class="section-marker mb-2" data-reveal>
+        <span class="label">Recent</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span class="masthead-line self-center">{{ len $items }} {{ cond (eq (len $items) 1) "post" "posts" }}</span>
       </div>
-    {{- else }}
-      <p class="text-neso-fg2">No items found yet.</p>
-    {{- end }}
 
-    {{- if gt (len $errors) 0 }}
-      <p class="text-neso-fg3 text-sm mt-6">Some feeds failed to load: {{ delimit $errors " · " }}</p>
-    {{- end }}
-    {{- if gt (len $feedCounts) 0 }}
-      <p class="text-neso-fg3 text-sm mt-3">
-        Feed counts:
-        {{- $pairs := slice -}}
-        {{- range $name, $count := $feedCounts -}}
-          {{- $pairs = $pairs | append (printf "%s: %d" $name $count) -}}
-        {{- end -}}
-        {{- delimit $pairs " · " -}}
-      </p>
-    {{- end }}
-  </section>
+      {{- if gt (len $items) 0 }}
+        <div>
+          {{- range $i, $item := $items }}
+            <a class="cat-row group {{ if not $item.image }}is-textonly{{ end }}"
+               href="{{ $item.link }}" target="_blank" rel="noopener noreferrer"
+               data-reveal style="--d:{{ mul $i 0.05 }}s">
+              <div class="order-2 md:order-1">
+                <div class="cat-entry">
+                  <span class="cat-num">{{ printf "%02d" (add $i 1) }}</span>
+                  <h3 class="cat-name">{{ $item.title }}</h3>
+                  <span class="cat-leaders hidden md:block" aria-hidden="true"></span>
+                  <svg class="cat-arrow size-4 stroke-2 stroke-current fill-none" aria-hidden="true">
+                    <use href="{{ $uiIcons.RelPermalink }}#external-link" />
+                  </svg>
+                </div>
+                <p class="cat-meta">{{ $item.source }} · {{ $item.date | time.Format "Jan 2, 2006" }}</p>
+                {{- with $item.summary }}
+                  <p class="cat-tag">{{ . }}</p>
+                {{- end }}
+              </div>
+              {{- with $item.image }}
+                <figure class="cat-plate order-1 md:order-2">
+                  <img src="{{ . }}" alt="" loading="lazy">
+                </figure>
+              {{- end }}
+            </a>
+          {{- end }}
+        </div>
+      {{- else }}
+        <p class="cat-tag border-t border-neso-deco2 pt-7">No dispatches found right now.</p>
+      {{- end }}
+
+      {{- with $errors }}
+        <p class="cat-meta mt-8">Some feeds failed to load: {{ delimit . " · " }}</p>
+      {{- end }}
+    </section>
+
+  </div>
 {{- end -}}

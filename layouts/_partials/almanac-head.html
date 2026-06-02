@@ -1,0 +1,14 @@
+{{- /*
+  Almanac page masthead. Call with a dict:
+    {{ partial "almanac-head.html" (dict "page" . "kicker" "Bio") }}
+  "kicker" is optional (defaults to the author name).
+*/ -}}
+{{- $p := .page -}}
+{{- $kicker := .kicker | default site.Params.author.name -}}
+<header class="almanac-head" data-reveal>
+  <p class="kicker">{{ $kicker }}</p>
+  <h1 class="almanac-title">{{ $p.Title }}</h1>
+  {{- with $p.Description }}
+    <p class="almanac-lede">{{ . | markdownify }}</p>
+  {{- end }}
+</header>

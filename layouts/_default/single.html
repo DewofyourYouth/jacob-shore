@@ -1,0 +1,29 @@
+{{- define "main" }}
+
+  <div class="almanac layout last:expansive">
+    <article>
+
+      {{- $kicker := cond (eq .Section "") site.Params.author.name (printf "Jacob Shore — %s" (.Section | humanize | title)) }}
+      {{- partial "almanac-head.html" (dict "page" . "kicker" $kicker) }}
+
+      {{- $coverHidden := .Param "neso.cover.hidden_in_single" | default false }}
+      {{- if and .Params.neso.cover.image (not $coverHidden) }}
+        <figure class="mb-r-xl overflow-hidden rounded-2xl border border-neso-deco2 [&_img]:w-full">
+          {{- partial "content/cover.html" (dict "ctx" . "IsSingle" true "isHero" true) }}
+        </figure>
+      {{- end }}
+
+      {{- if .Content }}
+        <div class="cnt almanac-prose mb-r-xl last:mb-0">
+          {{- if not site.Params.neso.page.disable_heading_links }}
+            {{- partial "content/heading_links.html" .Content }}
+          {{- else }}
+            {{ .Content }}
+          {{- end }}
+        </div>
+      {{- end }}
+
+    </article>
+  </div>
+
+{{- end -}}

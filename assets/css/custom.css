@@ -427,3 +427,159 @@
     }
   }
 }
+
+/* ============================================================
+ * ALMANAC — inner pages (Bio, Hire, Latest, single pages)
+ * Page masthead + editorial prose, reusing the home tokens.
+ * ============================================================ */
+
+@layer components {
+  /* ---- Page masthead ---- */
+  .almanac-head {
+    border-bottom: 1px solid var(--color-neso-deco2);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
+  }
+  .almanac-head .kicker {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .almanac-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--color-neso-fg0);
+    font-variation-settings: "opsz" 144;
+  }
+  .almanac-lede {
+    font-family: var(--font-body);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    line-height: 1.5;
+    color: var(--color-neso-fg2);
+    margin-top: 1.25rem;
+    max-width: 48ch;
+  }
+
+  /* ---- Editorial prose (markdown content) ---- */
+  .almanac-prose {
+    counter-reset: almanac-sec;
+  }
+  .almanac-prose h2 {
+    counter-increment: almanac-sec;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--color-neso-fg1);
+    font-variation-settings: "opsz" 72;
+    margin-top: 2.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-neso-deco2);
+  }
+  .almanac-prose h2::before {
+    content: counter(almanac-sec, decimal-leading-zero) "\00a0\00a0";
+    font-family: var(--font-mono);
+    font-size: 0.62em;
+    font-weight: 500;
+    color: var(--color-neso-splash);
+    vertical-align: 0.22em;
+  }
+  /* The masthead rule already separates the first section. */
+  .almanac-prose > h2:first-child {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .almanac-prose h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.6vw, 1.55rem);
+    color: var(--color-neso-fg1);
+    margin-top: 2rem;
+    font-variation-settings: "opsz" 48;
+  }
+  .almanac-prose h4 {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-neso-fg3);
+    margin-top: 1.75rem;
+  }
+  .almanac-prose p,
+  .almanac-prose ul,
+  .almanac-prose ol {
+    font-family: var(--font-body);
+    font-size: 1.12rem;
+    line-height: 1.72;
+    color: var(--color-neso-fg2);
+    margin: 1.15rem 0;
+  }
+  .almanac-prose ul,
+  .almanac-prose ol {
+    padding-left: 1.35rem;
+  }
+  .almanac-prose li {
+    margin: 0.4rem 0;
+  }
+  .almanac-prose ul > li::marker {
+    color: var(--color-neso-splash);
+  }
+  .almanac-prose strong {
+    color: var(--color-neso-fg1);
+    font-weight: 600;
+  }
+  .almanac-prose em {
+    font-style: italic;
+  }
+  .almanac-prose a:not(.heading-link) {
+    color: var(--color-neso-fg1);
+    text-decoration: underline;
+    text-decoration-color: var(--color-neso-splash);
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease;
+  }
+  .almanac-prose a:not(.heading-link):hover,
+  .almanac-prose a:not(.heading-link):focus-visible {
+    color: var(--color-neso-splash);
+  }
+  .almanac-prose blockquote {
+    border-left: 2px solid var(--color-neso-splash);
+    padding-left: 1.2rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--color-neso-fg2);
+  }
+  .almanac-prose hr {
+    border: 0;
+    border-top: 1px solid var(--color-neso-deco2);
+    margin: 2.5rem 0;
+  }
+  .almanac-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  /* Mono meta line used in the Latest/Dispatches index */
+  .cat-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-neso-fg3);
+    margin-top: 0.55rem;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Catalogue rows without a preview plate span the full width. */
+  .cat-row.is-textonly {
+    grid-template-columns: 1fr;
+  }
+}
