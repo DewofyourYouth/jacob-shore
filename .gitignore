@@ -2,3 +2,7 @@
 /public/
 /resources/
 .DS_Store
+
+# Media kit: keep brand docs/logos/social/icons in git, but not the heavy bits
+/jacob_shore_media_pkg/fonts/
+/jacob_shore_media_pkg/headshots/
