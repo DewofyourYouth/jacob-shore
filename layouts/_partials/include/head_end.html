@@ -7,3 +7,10 @@ Inserted immediately before </head> on all pages.
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+
+{{- /* PNG favicons. The theme only emits favicon.ico (64×64) and the
+       apple-touch-icon (set via branding.apple_touch_icon), so add the
+       smaller PNG sizes here. */}}
+<link rel="icon" type="image/png" sizes="16x16" href="{{ "images/favicon-16.png" | absURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "images/favicon-32.png" | absURL }}">
+<link rel="icon" type="image/png" sizes="48x48" href="{{ "images/favicon-48.png" | absURL }}">

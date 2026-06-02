@@ -46,7 +46,7 @@ params:
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
-  now: "Considering my options."
+  now: "Pondering definitions."
   author:
     name: "Jacob Shore"
     bio: "Software engineer, language learner, and builder of small but stubborn projects."
@@ -55,7 +55,7 @@ params:
   neso:
     branding:
       favicon_ico: "/images/favicon.ico"
-      apple_touch_icon: "/images/apple-touch-icon.png"
+      apple_touch_icon: "/images/apple-touch-icon-180.png"
       pwa_icon_192: "/images/android-chrome-192x192.png"
       pwa_icon_512: "/images/android-chrome-512x512.png"
       og_image: "img/new_profile.png"
