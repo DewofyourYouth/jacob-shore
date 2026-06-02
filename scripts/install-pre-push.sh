@@ -9,7 +9,9 @@ set -euo pipefail
 repo_root=$(git rev-parse --show-toplevel)
 "$repo_root/scripts/build_css.sh"
 
-git add "$repo_root/static/css/style.css"
+# build_css.sh rebuilds both the stylesheet and the Tailwind class-scan
+# stats, so stage both to keep them from drifting.
+git add "$repo_root/static/css/style.css" "$repo_root/hugo_stats.json"
 HOOK
 
 chmod +x "$hook_path"
