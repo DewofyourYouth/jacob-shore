@@ -29,7 +29,7 @@ Professionally I build backend systems and infrastructure. Outside of that: Arab
 
 - Designed, deployed, and operated Kubernetes-based production systems in a security-constrained, self-hosted environment
 - Implemented GitOps workflows using ArgoCD and Terraform for infrastructure-as-code across multiple services
-- Led delivery of a customer-facing deployment portal — reduced manual onboarding effort by 60%
+- Built the automated remote update system (web UI through Kubernetes deployment) that replaced a manual physical-courier process — cut update time from weeks to under an hour
 - Owned backend services across Python, Go, and Node.js end-to-end
 - Defined engineering standards around testing, deployment, and operational practices
 
