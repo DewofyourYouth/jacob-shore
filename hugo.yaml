@@ -47,7 +47,7 @@ params:
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
-  now: "A slow start to a new week."
+  now: "🎼 Singing in the shower. 🎶"
   author:
     name: "Jacob Shore"
     bio: "Software engineer, language learner, and builder of small but stubborn projects."
