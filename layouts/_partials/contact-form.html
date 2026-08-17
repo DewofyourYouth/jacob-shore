@@ -1,0 +1,133 @@
+{{- /*
+  Contact form (Turnstile + /api/contact Pages Function).
+  Used on the home page and via the contact-form shortcode on /hire/.
+  Only one instance may appear per page (element ids are singletons).
+*/ -}}
+<div class="not-prose">
+  <form id="contact-form" novalidate>
+    <div class="flex flex-col gap-6">
+
+      <div>
+        <label for="cf-name" class="field-label">Name</label>
+        <input
+          id="cf-name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          class="field-input"
+          placeholder="Your name"
+        />
+      </div>
+
+      <div>
+        <label for="cf-email" class="field-label">Email</label>
+        <input
+          id="cf-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          class="field-input"
+          placeholder="you@example.com"
+        />
+      </div>
+
+      <div>
+        <label for="cf-message" class="field-label">Message</label>
+        <textarea
+          id="cf-message"
+          name="message"
+          required
+          rows="5"
+          class="field-input resize-y"
+          placeholder="What are you building, and where does it hurt?"
+        ></textarea>
+      </div>
+
+      <div
+        class="cf-turnstile"
+        data-sitekey="{{ site.Params.turnstile.site_key }}"
+        data-theme="auto"
+      ></div>
+
+      <div id="cf-status" class="hidden text-sm px-4 py-3 rounded-[2px] border" aria-live="polite"></div>
+
+      <div>
+        <button id="cf-submit" type="submit" class="btn-stamp">
+          Send inquiry
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+(function () {
+  var form   = document.getElementById('contact-form');
+  var btn    = document.getElementById('cf-submit');
+  var status = document.getElementById('cf-status');
+
+  function showStatus(ok, msg) {
+    status.textContent = msg;
+    status.className = ok
+      ? 'text-sm px-4 py-3 rounded-[2px] border border-green-500/40 bg-green-500/10 text-green-700 dark:text-green-400'
+      : 'text-sm px-4 py-3 rounded-[2px] border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-400';
+  }
+
+  function resetTurnstile() {
+    if (window.turnstile) window.turnstile.reset();
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var name    = document.getElementById('cf-name').value.trim();
+    var email   = document.getElementById('cf-email').value.trim();
+    var message = document.getElementById('cf-message').value.trim();
+
+    if (!name || !email || !message) {
+      showStatus(false, 'Please fill in all fields.');
+      return;
+    }
+
+    var tokenInput = document.querySelector('input[name="cf-turnstile-response"]');
+    var token = tokenInput ? tokenInput.value : '';
+    if (!token) {
+      showStatus(false, 'Please complete the CAPTCHA.');
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = 'Sending…';
+    status.className = 'hidden';
+
+    fetch('/api/contact', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name: name, email: email, message: message, turnstileToken: token }),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.ok) {
+          showStatus(true, 'Inquiry sent — I\'ll be in touch within a day or two.');
+          form.reset();
+          resetTurnstile();
+        } else {
+          showStatus(false, data.error || 'Something went wrong. Please try again.');
+          resetTurnstile();
+        }
+      })
+      .catch(function () {
+        showStatus(false, 'Network error. Please check your connection and try again.');
+        resetTurnstile();
+      })
+      .finally(function () {
+        btn.disabled    = false;
+        btn.textContent = 'Send inquiry';
+      });
+  });
+})();
+</script>

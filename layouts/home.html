@@ -31,14 +31,14 @@
     <section id="top" class="home-section not-last:mb-r-xl">
       <div data-reveal style="--d:0s" class="masthead-line flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-y border-neso-deco2 py-3">
         <span>{{ $author.name | default site.Title }}</span>
-        <span aria-hidden="true" class="hidden sm:inline">Personal Index &amp; Project Journal</span>
+        <span aria-hidden="true" class="hidden sm:inline">AI &amp; Infrastructure Practice</span>
         <span>{{ $roman }} · {{ $year }}</span>
       </div>
 
       <div class="mt-10 md:mt-14 grid items-end gap-10 md:gap-12 lg:grid-cols-[minmax(0,1fr)_auto]">
         <div>
           <p data-reveal style="--d:.05s" class="kicker mb-5">
-            {{ with $author.location }}{{ . }} — {{ end }}Software engineer
+            {{ with $author.location }}{{ . }} — {{ end }}AI &amp; DevOps consultant
           </p>
           <h1 data-reveal style="--d:.1s" class="display-name">
             {{- $author.name | default site.Title -}}
@@ -46,7 +46,17 @@
           {{- with $author.bio | default $.Description }}
             <p data-reveal style="--d:.2s" class="lede mt-7">{{ . }}</p>
           {{- end }}
-          <div data-reveal style="--d:.3s" class="mt-8">
+
+          <div data-reveal style="--d:.28s" class="mt-9 flex flex-wrap items-center gap-4">
+            <a href="#contact" class="btn-stamp">Start a conversation</a>
+            <a href="#services" class="btn-stamp is-ghost">What I do</a>
+          </div>
+          <p data-reveal style="--d:.34s" class="masthead-line mt-6 flex items-center gap-2.5">
+            <span class="size-2 shrink-0 rounded-full bg-emerald-500" aria-hidden="true"></span>
+            Available now · Remote friendly
+          </p>
+
+          <div data-reveal style="--d:.4s" class="mt-8">
             {{- partial "home/social_icons.html" (dict "align" "start") }}
           </div>
         </div>
@@ -70,52 +80,170 @@
       </div>
     </section>
 
-    {{- /* ===================== ABOUT ===================== */ -}}
-    {{- if or $author.bio $author.location }}
-      <section id="about" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
-        <div data-reveal class="section-marker mb-9">
-          <span class="num">01</span>
-          <span class="label">About</span>
-          <span class="rule" aria-hidden="true"></span>
-          <svg class="size-5 shrink-0 self-center stroke-2 stroke-current fill-none text-neso-fg3" aria-hidden="true">
-            <use href="{{ $uiIcons.RelPermalink }}#feather" />
-          </svg>
+    {{- /* ===================== 01 SERVICES ===================== */ -}}
+    <section id="services" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
+      <div data-reveal class="section-marker mb-9">
+        <span class="num">01</span>
+        <span class="label">Services</span>
+        <span class="rule" aria-hidden="true"></span>
+        <span class="masthead-line hidden sm:inline self-center">Contract &amp; retainer</span>
+      </div>
+
+      <p data-reveal style="--d:.05s" class="statement mb-4 max-w-4xl">
+        Senior engineering for small teams — <em>AI systems</em> that actually ship, on <em>infrastructure</em> that holds.
+      </p>
+
+      <div class="mt-10">
+        <div data-reveal style="--d:.08s" class="svc-row">
+          <div class="cat-entry">
+            <span class="cat-num">A</span>
+            <h3 class="cat-name">AI systems integration</h3>
+          </div>
+          <p class="cat-tag">
+            RAG pipelines, semantic retrieval, and agent orchestration — with the evaluation
+            tooling to prove they work. I treat LLM features as engineering problems:
+            measurable, debuggable, and reliable enough to put in front of users.
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            <li class="stamp">RAG pipelines</li>
+            <li class="stamp">Agent orchestration</li>
+            <li class="stamp">Eval tooling</li>
+            <li class="stamp">Semantic retrieval</li>
+          </ul>
         </div>
 
-        <div class="grid gap-10 md:grid-cols-[1.5fr_1fr] md:gap-16">
-          <p data-reveal style="--d:.05s" class="statement">
-            A <em>language learner</em> and builder of small but stubborn projects — writing, games, and the quiet machinery behind them.
+        <div data-reveal style="--d:.15s" class="svc-row">
+          <div class="cat-entry">
+            <span class="cat-num">B</span>
+            <h3 class="cat-name">DevOps &amp; platform engineering</h3>
+          </div>
+          <p class="cat-tag">
+            Kubernetes, GitOps, and CI/CD — in the cloud or self-hosted where things have to
+            keep working. I own deployments from first commit to post-mortem, and leave behind
+            infrastructure your team can run without me.
           </p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            <li class="stamp">Kubernetes</li>
+            <li class="stamp">ArgoCD</li>
+            <li class="stamp">Terraform</li>
+            <li class="stamp">CI/CD</li>
+          </ul>
+        </div>
 
-          <div data-reveal style="--d:.12s" class="flex flex-col items-start gap-4 md:border-l md:border-neso-deco2 md:pl-10">
-            {{- with $author.location }}
-              <span class="stamp inline-flex items-center gap-2">
-                <svg width="13" height="13" viewBox="0 0 24 24" class="shrink-0 fill-none stroke-current" aria-hidden="true">
-                  <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 2C8.686 2 6 4.686 6 8c0 4.5 6 14 6 14s6-9.5 6-14c0-3.314-2.686-6-6-6z"/>
-                  <circle cx="12" cy="8" r="2" stroke-width="2"/>
-                </svg>
-                {{ . }}
-              </span>
-            {{- end }}
-            <a href="/bio/" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
-              Read the full bio
-              <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
-                <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
-              </svg>
-            </a>
+        <div data-reveal style="--d:.22s" class="svc-row">
+          <div class="cat-entry">
+            <span class="cat-num">C</span>
+            <h3 class="cat-name">Backend engineering</h3>
+          </div>
+          <p class="cat-tag">
+            Production services in Python, Go, or Node — designed, built, tested, and operated
+            end to end. Language chosen by the problem, not the résumé.
+          </p>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            <li class="stamp">Python</li>
+            <li class="stamp">Go</li>
+            <li class="stamp">Node.js</li>
+            <li class="stamp">FastAPI · Django</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {{- /* ===================== 02 THE RECORD ===================== */ -}}
+    <section id="record" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
+      <div data-reveal class="section-marker mb-9">
+        <span class="num">02</span>
+        <span class="label">The record</span>
+        <span class="rule" aria-hidden="true"></span>
+        <svg class="size-5 shrink-0 self-center stroke-2 stroke-current fill-none text-neso-fg3" aria-hidden="true">
+          <use href="{{ $uiIcons.RelPermalink }}#check" />
+        </svg>
+      </div>
+
+      <div>
+        <div data-reveal style="--d:.05s" class="ledger-row">
+          <span class="ledger-date">2022 – 2025</span>
+          <div>
+            <h3 class="ledger-place">Security-focused technology firm, Tel Aviv</h3>
+            <p class="ledger-note">
+              Built the automated remote update system — web UI through Kubernetes deployment —
+              that replaced a physical-courier process, cutting update time from weeks to under
+              an hour. Ran Kubernetes, ArgoCD, and Terraform in a security-constrained,
+              self-hosted environment.
+            </p>
           </div>
         </div>
-      </section>
-    {{- end }}
 
-    {{- /* ===================== PROJECTS (INDEX) ===================== */ -}}
-    <section id="projects" class="home-section mt-20 md:mt-28">
+        <div data-reveal style="--d:.12s" class="ledger-row">
+          <span class="ledger-date">2021 – 2022</span>
+          <div>
+            <h3 class="ledger-place">IronScales, Ramat Gan</h3>
+            <p class="ledger-note">
+              Django/Python APIs for a high-availability enterprise email-security platform,
+              working with infrastructure on deployment, scaling, and reliability on AWS.
+            </p>
+          </div>
+        </div>
+
+        <div data-reveal style="--d:.19s" class="ledger-row">
+          <span class="ledger-date">2019 – 2021</span>
+          <div>
+            <h3 class="ledger-place">DatAlign, Beit Shemesh</h3>
+            <p class="ledger-note">
+              CI/CD pipelines and Docker-based deployments for HIPAA-compliant healthcare
+              infrastructure; introduced infrastructure-as-code across environments.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal style="--d:.26s" class="mt-8">
+        <a href="/bio/" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+          Full background &amp; CV in the bio
+          <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
+            <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    {{- /* ============ CLASSIFIED NOTICE (unnumbered interlude) ============ */ -}}
+    <section id="terms" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
+      <div data-reveal class="notice">
+        <p class="notice-eyebrow">— Advertisement —</p>
+        <h2 class="notice-headline">Engineering services offered.<br>Inquire within.</h2>
+        <hr class="notice-rule" aria-hidden="true">
+        <p class="notice-copy">
+          Focused contract engagements, project-based or part-time retainer. Best suited to
+          small teams and early-stage startups that need senior-level work without a full-time
+          hire. Remote friendly, based in Israel. Currently available and able to start quickly;
+          every inquiry answered within a day or two.
+        </p>
+        <ul class="mt-7 flex flex-wrap justify-center gap-2">
+          <li class="stamp">Contract or retainer</li>
+          <li class="stamp">Remote friendly</li>
+          <li class="stamp">Available now</li>
+          <li class="stamp">Replies in 1–2 days</li>
+        </ul>
+        <div class="mt-9">
+          <a href="#contact" class="btn-stamp">Inquire within</a>
+        </div>
+      </div>
+    </section>
+
+    {{- /* ===================== 03 INDEX (PROJECTS) ===================== */ -}}
+    <section id="projects" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
       <div data-reveal class="section-marker mb-4">
-        <span class="num">02</span>
+        <span class="num">03</span>
         <span class="label">Index</span>
         <span class="rule" aria-hidden="true"></span>
         <span class="masthead-line self-center">{{ len $projects }} {{ cond (eq (len $projects) 1) "entry" "entries" }}</span>
       </div>
+
+      <p data-reveal style="--d:.03s" class="cat-tag mb-8 max-w-[52ch]">
+        The journal half of this almanac — side projects, games, and writing.
+        Proof I build things because I can't help it.
+      </p>
 
       {{- if gt (len $projects) 0 }}
         <div>
@@ -171,6 +299,49 @@
           Add projects in <code>data/projects.yaml</code> to show them here.
         </p>
       {{- end }}
+    </section>
+
+    {{- /* ===================== 04 CORRESPONDENCE ===================== */ -}}
+    <section id="contact" class="home-section mt-20 md:mt-28">
+      <div data-reveal class="section-marker mb-9">
+        <span class="num">04</span>
+        <span class="label">Correspondence</span>
+        <span class="rule" aria-hidden="true"></span>
+        <svg class="size-5 shrink-0 self-center stroke-2 stroke-current fill-none text-neso-fg3" aria-hidden="true">
+          <use href="{{ $uiIcons.RelPermalink }}#edit" />
+        </svg>
+      </div>
+
+      <div class="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-16">
+        <div data-reveal style="--d:.05s">
+          <p class="statement">
+            Tell me what you're building and <em>where it hurts</em>.
+          </p>
+          <p class="cat-tag mt-5">
+            A paragraph is plenty — what the system does, what's slow or fragile or missing,
+            and roughly when you need it. I read everything myself and reply within a day
+            or two.
+          </p>
+          <div class="mt-8 flex flex-col items-start gap-4 md:border-l md:border-neso-deco2 md:pl-8">
+            <a href="/jacob-shore-general-cv.pdf" target="_blank" rel="noopener" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+              Download the CV
+              <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
+                <use href="{{ $uiIcons.RelPermalink }}#external-link" />
+              </svg>
+            </a>
+            <a href="/bio/" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+              Read the full bio
+              <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
+                <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div data-reveal style="--d:.12s">
+          {{ partial "contact-form.html" . }}
+        </div>
+      </div>
     </section>
 
   </div>

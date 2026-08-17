@@ -1,7 +1,7 @@
 baseURL: "https://jacob-shore.com/"
 languageCode: "en-us"
 title: "Jacob Shore"
-description: "The hub of all things Jacob Shore."
+description: "AI systems and DevOps consulting for small teams — plus projects and writing."
 theme: "neso"
 enableRobotsTXT: true
 
@@ -16,8 +16,8 @@ menus:
     - name: "Home"
       url: "/#top"
       weight: 1
-    - name: "About"
-      url: "/#about"
+    - name: "Services"
+      url: "/#services"
       weight: 2
     - name: "Projects"
       url: "/#projects"
@@ -33,7 +33,7 @@ menus:
       weight: 6
 
 params:
-  description: "The hub of all things Jacob Shore."
+  description: "AI systems and DevOps consulting for small teams — plus projects and writing."
   turnstile:
     site_key: "0x4AAAAAADXKJhH82MPoyOFb"
   feeds:
@@ -47,10 +47,10 @@ params:
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
-  now: "Insomniacing..."
+  now: "Open for new engagements."
   author:
     name: "Jacob Shore"
-    bio: "Software engineer, language learner, and builder of small but stubborn projects."
+    bio: "I help small teams ship AI systems that hold up in production — and run the infrastructure underneath them."
     location: "Bet Shemesh, Israel"
     avatar: "/images/avatar.jpg"
   neso:
@@ -61,18 +61,19 @@ params:
       pwa_icon_512: "/images/android-chrome-512x512.png"
       og_image: "img/jacob_og_1200x630.png"
     seo:
-      site_description: "Jacob Shore — software engineer, ordained rabbi, and polyglot in Bet Shemesh, Israel. Backend systems, Kubernetes and cloud infrastructure, and AI integration, plus writing and language-learning projects."
+      site_description: "Jacob Shore — AI and DevOps consultant in Bet Shemesh, Israel. RAG pipelines and AI systems integration, Kubernetes and cloud infrastructure, CI/CD, and backend engineering for small teams and early-stage startups."
       site_keywords:
         - "Jacob Shore"
-        - "software engineer"
-        - "backend engineer"
-        - "Kubernetes"
+        - "AI consultant"
+        - "DevOps consultant"
+        - "freelance DevOps engineer"
+        - "AI systems integration"
+        - "RAG pipelines"
+        - "Kubernetes consultant"
         - "cloud infrastructure"
-        - "AI integration"
-        - "RAG"
+        - "backend engineer"
         - "Bet Shemesh"
         - "Israel"
-        - "polyglot"
       schema:
         publisher_type: "Person"
     enableGitInfo: true

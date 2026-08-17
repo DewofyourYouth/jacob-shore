@@ -1,6 +1,6 @@
 ---
 title: "Jacob Shore"
-description: "The hub of all things Jacob."
+description: "AI systems and DevOps consulting for small teams — RAG pipelines, Kubernetes infrastructure, CI/CD, and backend engineering."
 ---
 
-Explore the projects below.
+Senior contract engineering for small teams: AI systems that ship, infrastructure that holds.
