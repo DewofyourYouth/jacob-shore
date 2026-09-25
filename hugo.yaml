@@ -47,7 +47,7 @@ params:
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
-  now: "Open for new engagements."
+  now: "Happy Sukkot."
   author:
     name: "Jacob Shore"
     bio: "I help small teams ship AI systems that hold up in production — and run the infrastructure underneath them."
