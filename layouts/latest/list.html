@@ -60,8 +60,11 @@
           {{- if not $summary -}}
             {{- $summary = index $entry "content" -}}
           {{- end -}}
+          {{- if $title -}}
+            {{- $title = $title | plainify | htmlUnescape -}}
+          {{- end -}}
           {{- if $summary -}}
-            {{- $summary = $summary | truncate 200 -}}
+            {{- $summary = $summary | plainify | htmlUnescape | truncate 200 | string -}}
           {{- end -}}
           {{- $image := or (index $entry "image") (index $entry "banner_image") (index $entry "featured_image") (index $entry "featuredImage") (index $entry "thumbnail") (index $entry "banner") -}}
           {{- if and $image (eq (printf "%T" $image) "[]interface {}") -}}
@@ -126,7 +129,7 @@
               <div class="order-2 md:order-1">
                 <div class="cat-entry">
                   <span class="cat-num">{{ printf "%02d" (add $i 1) }}</span>
-                  <h3 class="cat-name">{{ $item.title }}</h3>
+                  <h3 class="cat-name" dir="auto">{{ $item.title }}</h3>
                   <span class="cat-leaders hidden md:block" aria-hidden="true"></span>
                   <svg class="cat-arrow size-4 stroke-2 stroke-current fill-none" aria-hidden="true">
                     <use href="{{ $uiIcons.RelPermalink }}#external-link" />
@@ -134,7 +137,7 @@
                 </div>
                 <p class="cat-meta">{{ $item.source }} · {{ $item.date | time.Format "Jan 2, 2006" }}</p>
                 {{- with $item.summary }}
-                  <p class="cat-tag">{{ . }}</p>
+                  <p class="cat-tag" dir="auto">{{ . }}</p>
                 {{- end }}
               </div>
               {{- with $item.image }}

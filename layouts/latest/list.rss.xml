@@ -47,6 +47,12 @@
             {{- if not $summary -}}
               {{- $summary = index $entry "content" -}}
             {{- end -}}
+            {{- if $title -}}
+              {{- $title = $title | plainify | htmlUnescape -}}
+            {{- end -}}
+            {{- if $summary -}}
+              {{- $summary = $summary | plainify | htmlUnescape -}}
+            {{- end -}}
             {{- $date := "" -}}
             {{- if $dateRaw -}}
               {{- $asTime := try (time.AsTime $dateRaw) -}}
