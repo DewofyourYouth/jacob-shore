@@ -5,6 +5,10 @@ description: "AI systems and DevOps consulting for small teams — plus projects
 theme: "neso"
 enableRobotsTXT: true
 
+services:
+  googleAnalytics:
+    id: "G-XEMRWXDRF8"
+
 outputs:
   home:
     - "HTML"
