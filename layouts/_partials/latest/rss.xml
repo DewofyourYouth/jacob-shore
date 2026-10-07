@@ -1,0 +1,49 @@
+{{- /*
+  Aggregated RSS 2.0 feed of params.feeds.latest. Shared by the home feed
+  (/index.xml) and /latest/index.xml. Built to work as a Brevo RSS-campaign
+  source. Every item carries an absolute featured-image URL three ways:
+    <enclosure>        → {{ item.ENCLOSURE }} (Brevo's default template image)
+    <media:content>    → {{ item.MEDIA_CONTENT.URL }}
+    <content:encoded>  → {{ item.CONTENT_ENCODED }} (image + summary + link as HTML)
+
+  Call with (dict "title" … "link" … "description" … "self" …).
+*/ -}}
+{{- $latest := partialCached "latest/items.html" . "latest-items" -}}
+{{- $limit := site.Params.feeds.rss_limit | default 30 -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>{{ .title }}</title>
+    <link>{{ .link }}</link>
+    <description>{{ .description }}</description>
+    <language>{{ site.Language.LanguageCode }}</language>
+    {{- range first 1 $latest.items }}
+    <lastBuildDate>{{ .date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=\"application/rss+xml\" />" .self | safeHTML }}
+    {{- range $item := first $limit $latest.items }}
+    <item>
+      <title>{{ .title | html }}</title>
+      <link>{{ .link }}</link>
+      <guid isPermaLink="true">{{ .link }}</guid>
+      <pubDate>{{ .date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <dc:creator>{{ site.Params.author.name | default site.Title }}</dc:creator>
+      <category>{{ .source }}</category>
+      {{- with .summary }}
+      <description>{{ . | html }}</description>
+      {{- end }}
+      {{- $html := "" -}}
+      {{- with .image }}{{ $html = printf `<p><a href="%s"><img src="%s" alt="" width="600" style="max-width:100%%;height:auto;display:block;border:0"></a></p>` $item.link . }}{{ end -}}
+      {{- with .summary }}{{ $html = printf "%s<p dir=\"auto\">%s</p>" $html (. | html) }}{{ end -}}
+      {{- $html = printf `%s<p><a href="%s">Read on %s →</a></p>` $html .link .source }}
+      <content:encoded>{{ printf "<![CDATA[%s]]>" $html | safeHTML }}</content:encoded>
+      {{- with .image }}
+        {{- $ext := path.Ext (index (split . "?") 0) | lower -}}
+        {{- $mime := index (dict ".png" "image/png" ".webp" "image/webp" ".gif" "image/gif" ".avif" "image/avif") $ext | default "image/jpeg" }}
+      <media:content url="{{ . }}" medium="image" type="{{ $mime }}" />
+      <enclosure url="{{ . }}" length="0" type="{{ $mime }}" />
+      {{- end }}
+    </item>
+    {{- end }}
+  </channel>
+</rss>

@@ -45,12 +45,28 @@ params:
       - name: "Dew of Your Youth"
         json: "https://www.dewofyouryouth.com/index.json"
         base_url: "https://www.dewofyouryouth.com"
+        fallback_image: "img/dewofyouryouth.png"  # used in the feed when a post has no image
       - name: "Daily Derja"
         json: "https://dailyderja.com/index.json"
         base_url: "https://dailyderja.com"
+        fallback_image: "img/dailyderja.jpg"
       - name: "Türk Defter"
         json: "https://turk-defter.com/index.json"
         base_url: "https://turk-defter.com"
+  newsletter:
+    eyebrow: "— By post —"
+    heading: "New writing, delivered."
+    copy: "Essays from *Dew of Your Youth*, Shami Arabic from *Daily Derja*, and notes from *Türk Defter* — straight to your inbox."
+    button: "Subscribe"
+    fine_print: "Occasional emails · Unsubscribe in one click"
+    # Optional: one Brevo list per topic. With two or more, the form shows
+    # checkboxes. Every list_id must also be in the BREVO_LIST_IDS env var.
+    # With none, signups go to the first id in BREVO_LIST_IDS.
+    # topics:
+    #   - name: "Dew of Your Youth"
+    #     list_id: 3
+    #   - name: "Daily Derja"
+    #     list_id: 4
   now: "Recovering from holidays."
   author:
     name: "Jacob Shore"
@@ -134,3 +150,9 @@ security:
       - "https://dewofyouryouth.com/index.json"
       - "https://www.dewofyouryouth.com/"
       - "https://www.dewofyouryouth.com/index.json"
+
+# Always refetch remote feeds, so a deploy-hook rebuild (triggered when Dew of
+# Your Youth / Daily Derja publish) never serves a cached copy of their index.json.
+caches:
+  getresource:
+    maxAge: 0

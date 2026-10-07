@@ -301,6 +301,11 @@
       {{- end }}
     </section>
 
+    {{- /* ============ SUBSCRIPTION NOTICE (unnumbered interlude) ============ */ -}}
+    <section id="subscribe" class="home-section not-last:mb-r-xl mt-20 md:mt-28">
+      {{- partial "subscribe-form.html" (dict "id" "home" "source" "home") }}
+    </section>
+
     {{- /* ===================== 04 CORRESPONDENCE ===================== */ -}}
     <section id="contact" class="home-section mt-20 md:mt-28">
       <div data-reveal class="section-marker mb-9">

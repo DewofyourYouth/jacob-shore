@@ -1,0 +1,82 @@
+{{- /*
+  Mailing-list signup (Turnstile + /api/subscribe Pages Function → Brevo).
+  Safe to use several times per page — pass a unique "id" for each.
+
+    {{ partial "subscribe-form.html" (dict "id" "home" "source" "home") }}
+
+  Options (all optional):
+    id       unique suffix for element ids (default "main")
+    source   tag sent to the function for logging (default: id)
+    variant  "notice" (boxed classified ad, default) or "plain" (bare form)
+    eyebrow, heading, copy, button — override params.newsletter copy
+*/ -}}
+{{- $nl := site.Params.newsletter | default dict -}}
+{{- $id := .id | default "main" -}}
+{{- $source := .source | default $id -}}
+{{- $variant := .variant | default "notice" -}}
+{{- $eyebrow := .eyebrow | default $nl.eyebrow | default "— By post —" -}}
+{{- $heading := .heading | default $nl.heading | default "Get new writing by email." -}}
+{{- $copy := .copy | default $nl.copy -}}
+{{- $button := .button | default $nl.button | default "Subscribe" -}}
+{{- $topics := $nl.topics | default slice -}}
+{{- $isNotice := eq $variant "notice" -}}
+
+<div class="not-prose {{ if $isNotice }}notice subscribe-notice{{ end }}" {{ if $isNotice }}data-reveal{{ end }}>
+  {{- if $isNotice }}
+    <p class="notice-eyebrow">{{ $eyebrow }}</p>
+    <h2 class="notice-headline">{{ $heading | markdownify }}</h2>
+    <hr class="notice-rule" aria-hidden="true">
+    {{- with $copy }}
+      <p class="notice-copy">{{ . | markdownify }}</p>
+    {{- end }}
+  {{- end }}
+
+  <form class="subscribe-form {{ if $isNotice }}mx-auto mt-8 text-left{{ end }}" data-subscribe data-source="{{ $source }}" data-button-label="{{ $button }}" novalidate>
+
+    {{- if gt (len $topics) 1 }}
+      <fieldset class="mb-6">
+        <legend class="field-label">What should I send you?</legend>
+        <div class="flex flex-wrap gap-2">
+          {{- range $i, $t := $topics }}
+            <label class="subscribe-topic" title="{{ $t.note }}">
+              <input type="checkbox" name="lists" value="{{ $t.list_id }}" checked class="sr-only peer">
+              <span class="stamp peer-checked:border-neso-splash peer-checked:text-neso-splash peer-focus-visible:outline-2 peer-focus-visible:outline-neso-splash">{{ $t.name }}</span>
+            </label>
+          {{- end }}
+        </div>
+      </fieldset>
+    {{- else }}
+      {{- range $topics }}
+        <input type="hidden" name="lists" value="{{ .list_id }}">
+      {{- end }}
+    {{- end }}
+
+    <label for="nl-email-{{ $id }}" class="field-label">Email address</label>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <input
+        id="nl-email-{{ $id }}"
+        name="email"
+        type="email"
+        required
+        autocomplete="email"
+        inputmode="email"
+        class="field-input sm:flex-1"
+        placeholder="you@example.com"
+      />
+      <button type="submit" class="btn-stamp justify-center shrink-0">{{ $button }}</button>
+    </div>
+
+    {{- /* Honeypot: hidden from people, irresistible to form-filling bots. */}}
+    <div class="absolute -left-[9999px]" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    <div class="cf-turnstile mt-3" data-sitekey="{{ site.Params.turnstile.site_key }}" data-theme="auto" data-appearance="interaction-only"></div>
+
+    <div data-subscribe-status class="hidden mt-4 text-sm px-4 py-3 rounded-[2px] border" aria-live="polite"></div>
+
+    <p class="masthead-line mt-4">{{ $nl.fine_print | default "Occasional emails. Unsubscribe in one click." }}</p>
+  </form>
+</div>
+
+<script src="{{ "js/subscribe.js" | relURL }}" defer></script>

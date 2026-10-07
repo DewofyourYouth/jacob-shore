@@ -1,0 +1,114 @@
+{{- /*
+  Fetches and normalises every feed in params.feeds.latest. Returns a slice of
+  dicts (title, link, date, summary, source, image, has_own_image), newest
+  first, plus an
+  "errors" slice — as (dict "items" … "errors" …).
+
+  Call via partialCached so the HTML page and the RSS outputs share one fetch:
+    {{ $latest := partialCached "latest/items.html" . "latest-items" }}
+*/ -}}
+{{- $items := slice -}}
+{{- $errors := slice -}}
+{{- range $feed := site.Params.feeds.latest }}
+  {{- $url := $feed.json | default $feed.rss | default "" -}}
+  {{- if $url }}
+    {{- $res := try (resources.GetRemote $url (dict "headers" (dict "User-Agent" "Mozilla/5.0 (Hugo)"))) -}}
+    {{- if $res.Err }}
+      {{- $errors = $errors | append (printf "%s (%s): %v" $feed.name $url $res.Err) -}}
+    {{- else }}
+      {{- $data := $res.Value | transform.Unmarshal -}}
+      {{- $entries := $data -}}
+      {{- if eq (printf "%T" $data) "map[string]interface {}" -}}
+        {{- with index $data "items" -}}
+          {{- $entries = . -}}
+        {{- else -}}
+          {{- with index $data "data" -}}
+            {{- $entries = . -}}
+          {{- else -}}
+            {{- with index $data "posts" -}}
+              {{- $entries = . -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- range $entry := $entries -}}
+        {{- $title := or (index $entry "title") (index $entry "name") -}}
+        {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "externalUrl") (index $entry "external_url") -}}
+        {{- if not $link -}}
+          {{- $uri := index $entry "uri" -}}
+          {{- if $uri -}}
+            {{- $link = $uri -}}
+            {{- $base := $feed.base_url | default "" -}}
+            {{- if and $base (strings.HasPrefix $uri "/") -}}
+              {{- $link = printf "%s%s" $base $uri -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $dateRaw := or (index $entry "date_published") (index $entry "date") (index $entry "published") (index $entry "published_at") -}}
+        {{- $summary := or (index $entry "summary") (index $entry "description") (index $entry "content_text") -}}
+        {{- if not $summary -}}
+          {{- $summary = index $entry "content" -}}
+        {{- end -}}
+        {{- if $title -}}
+          {{- $title = $title | plainify | htmlUnescape -}}
+        {{- end -}}
+        {{- if $summary -}}
+          {{- $summary = $summary | plainify | htmlUnescape | string -}}
+        {{- end -}}
+        {{- $image := or (index $entry "image") (index $entry "banner_image") (index $entry "featured_image") (index $entry "featuredImage") (index $entry "thumbnail") (index $entry "banner") -}}
+        {{- if and $image (eq (printf "%T" $image) "[]interface {}") -}}
+          {{- $image = index $image 0 -}}
+        {{- end -}}
+        {{- if not $image -}}
+          {{- $images := index $entry "images" -}}
+          {{- if and $images (eq (printf "%T" $images) "[]interface {}") -}}
+            {{- $image = index $images 0 -}}
+          {{- end -}}
+        {{- end -}}
+        {{- /* Email clients (Brevo's RSS block) need an absolute image URL on
+               every item, so resolve relative paths and fall back to the
+               feed's fallback_image, then the site's OG image. */ -}}
+        {{- if and $image (eq (printf "%T" $image) "string") (strings.HasPrefix $image "/") $feed.base_url -}}
+          {{- $image = printf "%s%s" (strings.TrimSuffix "/" $feed.base_url) $image -}}
+        {{- end -}}
+        {{- $hasOwnImage := and $image true -}}
+        {{- if not $image -}}
+          {{- with resources.Get ($feed.fallback_image | default site.Params.neso.branding.og_image) -}}
+            {{- $image = .Permalink -}}
+          {{- end -}}
+        {{- end -}}
+        {{- $date := "" -}}
+        {{- if $dateRaw -}}
+          {{- $asTime := try (time.AsTime $dateRaw) -}}
+          {{- if not $asTime.Err -}}
+            {{- $date = $asTime.Value -}}
+          {{- else -}}
+            {{- $parsed := try (time.Parse "2 January 2006" $dateRaw) -}}
+            {{- if not $parsed.Err -}}
+              {{- $date = $parsed.Value -}}
+            {{- else -}}
+              {{- $parsed = try (time.Parse "January 2, 2006" $dateRaw) -}}
+              {{- if not $parsed.Err -}}
+                {{- $date = $parsed.Value -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if and $title $link $date -}}
+          {{- $items = $items | append (dict
+            "title" $title
+            "link" $link
+            "date" $date
+            "summary" $summary
+            "source" $feed.name
+            "image" $image
+            "has_own_image" $hasOwnImage
+          ) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- return (dict "items" (sort $items "date" "desc") "errors" $errors) -}}

@@ -63,6 +63,7 @@
   </form>
 </div>
 
+{{- /* subscribe.js skips loading Turnstile again if this tag is already present. */}}
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 (function () {
@@ -78,7 +79,8 @@
   }
 
   function resetTurnstile() {
-    if (window.turnstile) window.turnstile.reset();
+    var widget = form.querySelector('.cf-turnstile');
+    if (window.turnstile && widget) window.turnstile.reset(widget);
   }
 
   form.addEventListener('submit', function (e) {
@@ -93,7 +95,7 @@
       return;
     }
 
-    var tokenInput = document.querySelector('input[name="cf-turnstile-response"]');
+    var tokenInput = form.querySelector('input[name="cf-turnstile-response"]');
     var token = tokenInput ? tokenInput.value : '';
     if (!token) {
       showStatus(false, 'Please complete the CAPTCHA.');

@@ -771,3 +771,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Mailing-list signup (subscribe-form.html) ---- */
+@layer components {
+  .subscribe-form {
+    max-width: 34rem;
+  }
+  .subscribe-topic {
+    cursor: pointer;
+  }
+}

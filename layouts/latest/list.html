@@ -15,103 +15,9 @@
       </div>
     {{- end }}
 
-  {{- $items := slice -}}
-  {{- $errors := slice -}}
-  {{- $feedCounts := dict -}}
-  {{- range $feed := site.Params.feeds.latest }}
-    {{- $url := $feed.json | default $feed.rss | default "" -}}
-    {{- if $url }}
-      {{- $res := try (resources.GetRemote $url (dict "headers" (dict "User-Agent" "Mozilla/5.0 (Hugo)"))) -}}
-      {{- if $res.Err }}
-        {{- $errors = $errors | append (printf "%s (%s): %v" $feed.name $url $res.Err) -}}
-      {{- else }}
-        {{- $data := $res.Value | transform.Unmarshal -}}
-        {{- $entries := $data -}}
-        {{- if eq (printf "%T" $data) "map[string]interface {}" -}}
-          {{- with index $data "items" -}}
-            {{- $entries = . -}}
-          {{- else -}}
-            {{- with index $data "data" -}}
-              {{- $entries = . -}}
-            {{- else -}}
-              {{- with index $data "posts" -}}
-                {{- $entries = . -}}
-              {{- end -}}
-            {{- end -}}
-          {{- end -}}
-        {{- end -}}
-
-        {{- $count := 0 -}}
-        {{- range $k, $entry := $entries -}}
-          {{- $title := or (index $entry "title") (index $entry "name") -}}
-          {{- $link := or (index $entry "permalink") (index $entry "url") (index $entry "link") (index $entry "externalUrl") (index $entry "external_url") -}}
-          {{- if not $link -}}
-            {{- $uri := index $entry "uri" -}}
-            {{- if $uri -}}
-              {{- $link = $uri -}}
-              {{- $base := $feed.base_url | default "" -}}
-              {{- if and $base (strings.HasPrefix $uri "/") -}}
-                {{- $link = printf "%s%s" $base $uri -}}
-              {{- end -}}
-            {{- end -}}
-          {{- end -}}
-          {{- $dateRaw := or (index $entry "date_published") (index $entry "date") (index $entry "published") (index $entry "published_at") -}}
-          {{- $summary := or (index $entry "summary") (index $entry "description") (index $entry "content_text") -}}
-          {{- if not $summary -}}
-            {{- $summary = index $entry "content" -}}
-          {{- end -}}
-          {{- if $title -}}
-            {{- $title = $title | plainify | htmlUnescape -}}
-          {{- end -}}
-          {{- if $summary -}}
-            {{- $summary = $summary | plainify | htmlUnescape | truncate 200 | string -}}
-          {{- end -}}
-          {{- $image := or (index $entry "image") (index $entry "banner_image") (index $entry "featured_image") (index $entry "featuredImage") (index $entry "thumbnail") (index $entry "banner") -}}
-          {{- if and $image (eq (printf "%T" $image) "[]interface {}") -}}
-            {{- $image = index $image 0 -}}
-          {{- end -}}
-          {{- if not $image -}}
-            {{- $images := index $entry "images" -}}
-            {{- if and $images (eq (printf "%T" $images) "[]interface {}") -}}
-              {{- $image = index $images 0 -}}
-            {{- end -}}
-          {{- end -}}
-          {{- $date := "" -}}
-          {{- if $dateRaw -}}
-            {{- $asTime := try (time.AsTime $dateRaw) -}}
-            {{- if not $asTime.Err -}}
-              {{- $date = $asTime.Value -}}
-            {{- else -}}
-              {{- $parsed := try (time.Parse "2 January 2006" $dateRaw) -}}
-              {{- if not $parsed.Err -}}
-                {{- $date = $parsed.Value -}}
-              {{- else -}}
-                {{- $parsed = try (time.Parse "January 2, 2006" $dateRaw) -}}
-                {{- if not $parsed.Err -}}
-                  {{- $date = $parsed.Value -}}
-                {{- end -}}
-              {{- end -}}
-            {{- end -}}
-          {{- end -}}
-          {{- if and $title $link $date -}}
-            {{- $items = $items | append (dict
-              "title" $title
-              "link" $link
-              "date" $date
-              "summary" $summary
-              "source" $feed.name
-              "image" $image
-            ) -}}
-            {{- $count = add $count 1 -}}
-          {{- end -}}
-        {{- end -}}
-        {{- $feedCounts = merge $feedCounts (dict $feed.name $count) -}}
-      {{- end }}
-    {{- end }}
-  {{- end }}
-
-  {{- $items = sort $items "date" "desc" -}}
-  {{- $items = first 12 $items -}}
+  {{- $latest := partialCached "latest/items.html" . "latest-items" -}}
+  {{- $errors := $latest.errors -}}
+  {{- $items := first 12 $latest.items -}}
 
     <section class="mt-14 md:mt-20">
       <div class="section-marker mb-2" data-reveal>
@@ -123,7 +29,7 @@
       {{- if gt (len $items) 0 }}
         <div>
           {{- range $i, $item := $items }}
-            <a class="cat-row group {{ if not $item.image }}is-textonly{{ end }}"
+            <a class="cat-row group {{ if not $item.has_own_image }}is-textonly{{ end }}"
                href="{{ $item.link }}" target="_blank" rel="noopener noreferrer"
                data-reveal style="--d:{{ mul $i 0.05 }}s">
               <div class="order-2 md:order-1">
@@ -137,12 +43,12 @@
                 </div>
                 <p class="cat-meta">{{ $item.source }} · {{ $item.date | time.Format "Jan 2, 2006" }}</p>
                 {{- with $item.summary }}
-                  <p class="cat-tag" dir="auto">{{ . }}</p>
+                  <p class="cat-tag" dir="auto">{{ . | truncate 200 }}</p>
                 {{- end }}
               </div>
-              {{- with $item.image }}
+              {{- if $item.has_own_image }}
                 <figure class="cat-plate order-1 md:order-2">
-                  <img src="{{ . }}" alt="" loading="lazy">
+                  <img src="{{ $item.image }}" alt="" loading="lazy">
                 </figure>
               {{- end }}
             </a>
@@ -155,6 +61,10 @@
       {{- with $errors }}
         <p class="cat-meta mt-8">Some feeds failed to load: {{ delimit . " · " }}</p>
       {{- end }}
+    </section>
+
+    <section class="mt-16 md:mt-24">
+      {{- partial "subscribe-form.html" (dict "id" "latest" "source" "latest") }}
     </section>
 
   </div>

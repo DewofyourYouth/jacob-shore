@@ -1,0 +1,11 @@
+{{- /* Mailing-list signup for markdown pages:
+       {{< subscribe >}}  or  {{< subscribe variant="plain" source="bio" >}} */ -}}
+<div class="mt-r-xl">
+  {{ partial "subscribe-form.html" (dict
+    "id" (printf "sc-%d" .Ordinal)
+    "source" (.Get "source" | default .Page.File.ContentBaseName)
+    "variant" (.Get "variant")
+    "heading" (.Get "heading")
+    "copy" (.Get "copy")
+  ) }}
+</div>

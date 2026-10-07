@@ -61,6 +61,21 @@ entrypoints live inside the theme submodule, not the repo root.
   listed under `params.feeds.latest` in `hugo.yaml`, using `resources.GetRemote`.
   Those remote URLs are also allowlisted under `security.http.urls` in `hugo.yaml` —
   **adding a new feed requires adding its URL there too**, or the fetch is blocked.
+- **Latest feeds** share one fetch/normalise partial, `layouts/_partials/latest/items.html`
+  (called via `partialCached`). The RSS outputs (`/index.xml`, `/latest/index.xml`) both
+  render `layouts/_partials/latest/rss.xml`, which is the source for Brevo RSS campaigns:
+  every item has an absolute image in `<enclosure>` (Brevo's `{{ item.ENCLOSURE }}`),
+  `<media:content>`, and `<content:encoded>`, falling back to the feed's `fallback_image`
+  or the site OG image. `caches.getresource.maxAge: 0` keeps rebuilds from using stale feeds.
+- **Auto-rebuild on new posts:** the Dew of Your Youth (`dew-blog`) and Daily Derja repos'
+  GitHub Actions detect new permalinks in their `index.json` and POST to this site's
+  Cloudflare Pages deploy hook (secret `JACOB_SHORE_DEPLOY_HOOK` in those repos).
+- **Mailing-list signup** (`layouts/_partials/subscribe-form.html`, `{{< subscribe >}}`
+  shortcode, `static/js/subscribe.js` → `functions/api/subscribe.js`): Turnstile, then
+  adds the contact to Brevo. Env vars: `BREVO_API_KEY`, `BREVO_LIST_IDS` (comma-separated
+  allowlist; first is the default), optional `BREVO_DOI_TEMPLATE_ID` /
+  `BREVO_DOI_REDIRECT_URL` for double opt-in. Copy and optional per-topic lists live
+  under `params.newsletter` in `hugo.yaml`. Pages: `/subscribe/`, `/subscribed/`.
 - **Contact form** (`layouts/_shortcodes/contact-form.html` →
   `functions/api/contact.js`): a Cloudflare Pages Function. It verifies a Cloudflare
   Turnstile CAPTCHA, then sends mail via the Resend API. It depends on the env vars

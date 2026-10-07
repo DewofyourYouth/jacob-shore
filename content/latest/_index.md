@@ -1,6 +1,6 @@
 ---
 title: "Latest posts"
-description: "The 10 most recent posts across my projects."
+description: "Recent posts from Dew of Your Youth, Daily Derja, and Türk Defter."
 outputs:
   - "HTML"
   - "RSS"
