@@ -67,6 +67,9 @@ entrypoints live inside the theme submodule, not the repo root.
   every item has an absolute image in `<enclosure>` (Brevo's `{{ item.ENCLOSURE }}`),
   `<media:content>`, and `<content:encoded>`, falling back to the feed's `fallback_image`
   or the site OG image. `caches.getresource.maxAge: 0` keeps rebuilds from using stale feeds.
+  The home page's `params.now` status is also emitted as a feed item dated
+  `params.now_updated` — bump that date whenever `now` changes, or Brevo won't treat
+  it as new.
 - **Auto-rebuild on new posts:** the Dew of Your Youth (`dew-blog`) and Daily Derja repos'
   GitHub Actions detect new permalinks in their `index.json` and POST to this site's
   Cloudflare Pages deploy hook (secret `JACOB_SHORE_DEPLOY_HOOK` in those repos).

@@ -68,6 +68,10 @@ params:
     #   - name: "Daily Derja"
     #     list_id: 4
   now: "Recovering from holidays."
+  # Date the "now" status last changed. Bump it whenever you edit `now` — the
+  # RSS feed (and so the Brevo digest) carries the status as its own item, and
+  # this date is what makes it count as new.
+  now_updated: 2026-10-08
   author:
     name: "Jacob Shore"
     bio: "I help small teams ship AI systems that hold up in production — and run the infrastructure underneath them."
