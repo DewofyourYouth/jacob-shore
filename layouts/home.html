@@ -48,8 +48,8 @@
           {{- end }}
 
           <div data-reveal style="--d:.28s" class="mt-9 flex flex-wrap items-center gap-4">
-            <a href="#contact" class="btn-stamp">Start a conversation</a>
-            <a href="#services" class="btn-stamp is-ghost">What I do</a>
+            <a href="#contact" class="btn-stamp" data-track="cta_click" data-track-cta="contact" data-track-location="hero">Start a conversation</a>
+            <a href="#services" class="btn-stamp is-ghost" data-track="cta_click" data-track-cta="services" data-track-location="hero">What I do</a>
           </div>
           <p data-reveal style="--d:.34s" class="masthead-line mt-6 flex items-center gap-2.5">
             <span class="size-2 shrink-0 rounded-full bg-emerald-500" aria-hidden="true"></span>
@@ -198,7 +198,7 @@
       </div>
 
       <div data-reveal style="--d:.26s" class="mt-8">
-        <a href="/bio/" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+        <a href="/bio/" data-track="cta_click" data-track-cta="bio" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
           Full background &amp; CV in the bio
           <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
             <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
@@ -226,7 +226,7 @@
           <li class="stamp">Replies in 1–2 days</li>
         </ul>
         <div class="mt-9">
-          <a href="#contact" class="btn-stamp">Inquire within</a>
+          <a href="#contact" class="btn-stamp" data-track="cta_click" data-track-cta="contact" data-track-location="notice">Inquire within</a>
         </div>
       </div>
     </section>
@@ -255,6 +255,7 @@
 
             <a class="cat-row group"
                {{ with $hasURL }}href="{{ . }}"{{ end }}
+               data-track="select_content" data-track-content-type="project" data-track-item-id="{{ $project.name }}"
                data-reveal style="--d:{{ mul $i 0.07 }}s">
               <div class="order-2 md:order-1">
                 <div class="cat-entry">
@@ -328,13 +329,13 @@
             or two.
           </p>
           <div class="mt-8 flex flex-col items-start gap-4 md:border-l md:border-neso-deco2 md:pl-8">
-            <a href="/jacob-shore-general-cv.pdf" target="_blank" rel="noopener" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+            <a href="/jacob-shore-general-cv.pdf" target="_blank" rel="noopener" data-track="cta_click" data-track-cta="cv_download" data-track-location="correspondence" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
               Download the CV
               <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
                 <use href="{{ $uiIcons.RelPermalink }}#external-link" />
               </svg>
             </a>
-            <a href="/bio/" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
+            <a href="/bio/" data-track="cta_click" data-track-cta="bio" class="kicker inline-flex items-center gap-2 no-underline hover:text-neso-fg1 focus-visible:text-neso-fg1 transition-colors" style="text-decoration:none">
               Read the full bio
               <svg class="size-3.5 stroke-2 stroke-current fill-none" aria-hidden="true">
                 <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />

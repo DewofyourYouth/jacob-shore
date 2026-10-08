@@ -1,1 +1,1 @@
-<a href="{{ .Get "href" }}" target="_blank" rel="noopener noreferrer">{{ .Get "text" }}</a>
+<a href="{{ .Get "href" }}" target="_blank" rel="noopener noreferrer"{{ with .Get "track" }} data-track="cta_click" data-track-cta="{{ . }}" data-track-location="{{ $.Page.File.ContentBaseName }}"{{ end }}>{{ .Get "text" }}</a>

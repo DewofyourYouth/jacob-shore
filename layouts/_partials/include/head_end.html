@@ -23,3 +23,9 @@ Inserted immediately before </head> on all pages.
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Jacob Shore — software engineer, language learner, and builder of small but stubborn projects.">
 {{- end }}
+
+{{- /* GA4 event helper + declarative data-track clicks (see static/js/track.js). */}}
+<script src="{{ "js/track.js" | relURL }}" defer></script>
+{{- with .Params.track_event }}
+<meta name="track-event" content="{{ . }}">
+{{- end }}

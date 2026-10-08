@@ -76,6 +76,13 @@ entrypoints live inside the theme submodule, not the repo root.
   allowlist; first is the default), optional `BREVO_DOI_TEMPLATE_ID` /
   `BREVO_DOI_REDIRECT_URL` for double opt-in. Copy and optional per-topic lists live
   under `params.newsletter` in `hugo.yaml`. Pages: `/subscribe/`, `/subscribed/`.
+- **GA4 events** (`static/js/track.js`, loaded site-wide from `include/head_end.html`):
+  use `window.siteTrack(name, params)` or add `data-track="event"` plus
+  `data-track-<param>` attributes to any clickable element; front matter
+  `track_event: name` fires an event on page load. Events in use: `cta_click`,
+  `select_content` (projects, Latest posts), `subscribe_view/start/error`, `sign_up`,
+  `subscribe_confirmed`, `contact_start/error`, `generate_lead`. Plain `hugo server`
+  doesn't load GA, so the helper does nothing locally.
 - **Contact form** (`layouts/_shortcodes/contact-form.html` →
   `functions/api/contact.js`): a Cloudflare Pages Function. It verifies a Cloudflare
   Turnstile CAPTCHA, then sends mail via the Resend API. It depends on the env vars

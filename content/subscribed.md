@@ -1,6 +1,7 @@
 ---
 title: "You're subscribed"
 description: "Thanks for confirming — new posts will arrive in your inbox."
+track_event: "subscribe_confirmed"
 sitemap:
   disable: true
 ---

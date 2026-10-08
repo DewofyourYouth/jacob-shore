@@ -1,6 +1,12 @@
 /*
  * Mailing-list signup forms (layouts/_partials/subscribe-form.html).
  * Included once per form instance, so binding is idempotent.
+ *
+ * GA4 events (all carry form_location = the form's data-source):
+ *   subscribe_view   form scrolled into view (once per page load)
+ *   subscribe_start  first focus on the email field
+ *   sign_up          successful submit (method "newsletter", double_opt_in)
+ *   subscribe_error  error_type: validation | captcha | server | network
  */
 (function () {
   var TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
@@ -11,6 +17,11 @@
     s.async = true;
     s.defer = true;
     document.head.appendChild(s);
+  }
+
+  function track(name, params) {
+    if (window.siteTrack) window.siteTrack(name, params);
+    else if (typeof window.gtag === 'function') window.gtag('event', name, params);
   }
 
   function showStatus(el, ok, msg) {
@@ -48,13 +59,32 @@
     var btn = form.querySelector('button[type="submit"]');
     var status = form.querySelector('[data-subscribe-status]');
     var label = form.dataset.buttonLabel || btn.textContent;
+    var where = { form_location: form.dataset.source || '' };
+    function fail(type, msg) {
+      showStatus(status, false, msg);
+      track('subscribe_error', Object.assign({ error_type: type }, where));
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (en) { return en.isIntersecting; })) {
+          track('subscribe_view', where);
+          io.disconnect();
+        }
+      }, { threshold: 0.5 });
+      io.observe(form);
+    }
+
+    form.elements.email.addEventListener('focus', function () {
+      track('subscribe_start', where);
+    }, { once: true });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       var email = form.elements.email.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showStatus(status, false, 'Please enter a valid email address.');
+        fail('validation', 'Please enter a valid email address.');
         return;
       }
 
@@ -63,7 +93,7 @@
         .filter(function (i) { return i.type === 'hidden' || i.checked; })
         .map(function (i) { return Number(i.value); });
       if (form.querySelector('input[name="lists"][type="checkbox"]') && !lists.length) {
-        showStatus(status, false, 'Pick at least one topic.');
+        fail('validation', 'Pick at least one topic.');
         return;
       }
 
@@ -90,15 +120,22 @@
         .then(function (data) {
           if (data.ok) {
             showStatus(status, true, data.message || "You're on the list — thanks!");
+            track('sign_up', Object.assign({
+              method: 'newsletter',
+              double_opt_in: !!data.doubleOptIn,
+              list_count: lists.length || 1,
+            }, where));
             form.reset();
           } else {
-            showStatus(status, false, data.error || 'Something went wrong. Please try again.');
+            fail('server', data.error || 'Something went wrong. Please try again.');
           }
         })
         .catch(function (err) {
-          showStatus(status, false, err && err.message === 'captcha'
-            ? 'Still checking you are human — please try again in a moment.'
-            : 'Network error. Please check your connection and try again.');
+          if (err && err.message === 'captcha') {
+            fail('captcha', 'Still checking you are human — please try again in a moment.');
+          } else {
+            fail('network', 'Network error. Please check your connection and try again.');
+          }
         })
         .finally(function () {
           resetTurnstile(form);

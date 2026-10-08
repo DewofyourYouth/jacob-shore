@@ -117,6 +117,7 @@ export async function onRequestPost(context) {
 
   return json({
     ok: true,
+    doubleOptIn: useDoi,
     message: useDoi
       ? "Almost there — check your inbox to confirm your subscription."
       : "You're on the list — thanks!",

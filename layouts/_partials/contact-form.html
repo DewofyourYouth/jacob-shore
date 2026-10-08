@@ -71,6 +71,13 @@
   var btn    = document.getElementById('cf-submit');
   var status = document.getElementById('cf-status');
 
+  // GA4: contact_start (first field focus), generate_lead (sent), contact_error.
+  var where = { form_location: location.pathname };
+  function track(name, params) {
+    if (window.siteTrack) window.siteTrack(name, Object.assign({}, where, params));
+  }
+  form.addEventListener('focusin', function () { track('contact_start'); }, { once: true });
+
   function showStatus(ok, msg) {
     status.textContent = msg;
     status.className = ok
@@ -92,6 +99,7 @@
 
     if (!name || !email || !message) {
       showStatus(false, 'Please fill in all fields.');
+      track('contact_error', { error_type: 'validation' });
       return;
     }
 
@@ -99,6 +107,7 @@
     var token = tokenInput ? tokenInput.value : '';
     if (!token) {
       showStatus(false, 'Please complete the CAPTCHA.');
+      track('contact_error', { error_type: 'captcha' });
       return;
     }
 
@@ -115,15 +124,18 @@
       .then(function (data) {
         if (data.ok) {
           showStatus(true, 'Inquiry sent — I\'ll be in touch within a day or two.');
+          track('generate_lead', { lead_source: 'contact_form' });
           form.reset();
           resetTurnstile();
         } else {
           showStatus(false, data.error || 'Something went wrong. Please try again.');
+          track('contact_error', { error_type: 'server' });
           resetTurnstile();
         }
       })
       .catch(function () {
         showStatus(false, 'Network error. Please check your connection and try again.');
+        track('contact_error', { error_type: 'network' });
         resetTurnstile();
       })
       .finally(function () {
