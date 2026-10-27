@@ -62,4 +62,6 @@
   </form>
 </div>
 
-<script src="{{ "js/subscribe.js" | relURL }}" defer></script>
+{{- /* Versioned by content hash: /js/ is cached for hours, and a stale script
+     leaves the form posting natively to Brevo, which answers with raw JSON. */}}
+<script src="{{ "js/subscribe.js" | relURL }}?v={{ readFile "static/js/subscribe.js" | md5 | truncate 10 "" }}" defer></script>
