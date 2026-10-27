@@ -140,6 +140,11 @@ module:
       target: "assets/notwatching/hugo_stats.json"
 
 security:
+  # Hugo's default exec allowlist plus tailwindcss, which css.TailwindCSS shells
+  # out to (scripts/build_css.sh / the pre-push hook). Hugo >= 0.167 dropped it
+  # from the defaults.
+  exec:
+    allow: ['^(dart-)?sass$', '^go$', '^git$', '^node$', '^postcss$', '^tailwindcss$']
   http:
     methods: ["GET"]
     urls:
