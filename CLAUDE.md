@@ -78,7 +78,10 @@ entrypoints live inside the theme submodule, not the repo root.
   "jacob-shore-subscribe" (URL in `params.newsletter.brevo_action`), same as the other
   blogs, so there's no Pages Function or env vars. That form adds to Brevo list #10
   "Jacob Shore - All Sites" with double opt-in, which redirects to `/subscribed/`.
-  The list is meant for the RSS campaign built from `/index.xml`, which covers every site.
+  Brevo RSS integration "jacob-shore.com | All Sites" mails `/index.xml` to that list
+  (Mondays 08:30) using template "Jacob Shore - All sites (RSS)", whose source is
+  `email/brevo-rss-template.html` (logo: `static/images/email-logo.png`). Brevo parses
+  HTML comments, so never put a literal `{% ... %}` tag in a template comment.
   Copy lives under `params.newsletter` in `hugo.yaml`. Pages: `/subscribe/`, `/subscribed/`.
 - **GA4 events** (`static/js/track.js`, loaded site-wide from `include/head_end.html`):
   use `window.siteTrack(name, params)` or add `data-track="event"` plus
