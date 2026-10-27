@@ -13,7 +13,9 @@
   Feed: https://jacob-shore.com/index.xml (<category> = source site, "Now" = status item).
   Paste into Brevo → Templates → New template → "Paste your code".
   RSS keys (Brevo help 360016993299): item.ENCLOSURE · TITLE · CATEGORY · DESCRIPTION · LINK.
-  The {% for %} loop is the repeatable block; change the slice to send more/fewer posts.
+  The for-loop over params.items is the repeatable block; change the slice to send more/fewer posts.
+  Never write a literal Brevo tag in this comment: Brevo parses comments too, and an
+  empty for-tag breaks the whole template.
 -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
