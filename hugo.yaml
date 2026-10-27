@@ -59,14 +59,11 @@ params:
     copy: "Essays from *Dew of Your Youth*, Shami Arabic from *Daily Derja*, and notes from *Türk Defter* — straight to your inbox."
     button: "Subscribe"
     fine_print: "Occasional emails · Unsubscribe in one click"
-    # Optional: one Brevo list per topic. With two or more, the form shows
-    # checkboxes. Every list_id must also be in the BREVO_LIST_IDS env var.
-    # With none, signups go to the first id in BREVO_LIST_IDS.
-    # topics:
-    #   - name: "Dew of Your Youth"
-    #     list_id: 3
-    #   - name: "Daily Derja"
-    #     list_id: 4
+    # Signups post straight to Brevo form "jacob-shore-subscribe" (list #10
+    # "Jacob Shore - All Sites", double opt-in -> /subscribed/), the same way the
+    # other blogs do. That list gets the RSS campaign built from
+    # https://jacob-shore.com/index.xml, which aggregates every site.
+    brevo_action: "https://6178fa53.sibforms.com/serve/MUIFAPTsYQ43lR-ZdKU439EzEYqfGbIjAewUYod0jV6VLb9RUk4lYnJGBfntm4-EWEJTAkBUQ0DaA0Oe4SbGKWU8QjdSKgzcnzg9AiH6rGzzR8azy_SiSDIGFA5ehMC00yqfbnKzbwNnfv9Hoo_PXhkwnEoBOC1PBWPHSh2gwjCowe300O8Tt2UEyri5ZgPHDUaBfnPTlgC2PTnk8A=="
   now: "Recovering from holidays."
   # Date the "now" status last changed. Bump it whenever you edit `now` — the
   # RSS feed (and so the Brevo digest) carries the status as its own item, and

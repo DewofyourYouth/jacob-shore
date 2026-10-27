@@ -74,11 +74,12 @@ entrypoints live inside the theme submodule, not the repo root.
   GitHub Actions detect new permalinks in their `index.json` and POST to this site's
   Cloudflare Pages deploy hook (secret `JACOB_SHORE_DEPLOY_HOOK` in those repos).
 - **Mailing-list signup** (`layouts/_partials/subscribe-form.html`, `{{< subscribe >}}`
-  shortcode, `static/js/subscribe.js` → `functions/api/subscribe.js`): Turnstile, then
-  adds the contact to Brevo. Env vars: `BREVO_API_KEY`, `BREVO_LIST_IDS` (comma-separated
-  allowlist; first is the default), optional `BREVO_DOI_TEMPLATE_ID` /
-  `BREVO_DOI_REDIRECT_URL` for double opt-in. Copy and optional per-topic lists live
-  under `params.newsletter` in `hugo.yaml`. Pages: `/subscribe/`, `/subscribed/`.
+  shortcode, `static/js/subscribe.js`): posts straight to the Brevo-hosted form
+  "jacob-shore-subscribe" (URL in `params.newsletter.brevo_action`), same as the other
+  blogs, so there's no Pages Function or env vars. That form adds to Brevo list #10
+  "Jacob Shore - All Sites" with double opt-in, which redirects to `/subscribed/`.
+  The list is meant for the RSS campaign built from `/index.xml`, which covers every site.
+  Copy lives under `params.newsletter` in `hugo.yaml`. Pages: `/subscribe/`, `/subscribed/`.
 - **GA4 events** (`static/js/track.js`, loaded site-wide from `include/head_end.html`):
   use `window.siteTrack(name, params)` or add `data-track="event"` plus
   `data-track-<param>` attributes to any clickable element; front matter
