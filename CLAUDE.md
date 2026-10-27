@@ -77,7 +77,8 @@ entrypoints live inside the theme submodule, not the repo root.
   shortcode, `static/js/subscribe.js`): posts straight to the Brevo-hosted form
   "jacob-shore-subscribe" (URL in `params.newsletter.brevo_action`), same as the other
   blogs, so there's no Pages Function or env vars. That form adds to Brevo list #10
-  "Jacob Shore - All Sites" with double opt-in, which redirects to `/subscribed/`.
+  "Jacob Shore - All Sites" with double opt-in (Brevo template "Jacob Shore - Double
+  opt-in confirmation", source `email/brevo-doi-template.html`), which redirects to `/subscribed/`.
   Brevo RSS integration "jacob-shore.com | All Sites" mails `/index.xml` to that list
   (Mondays 08:30) using template "Jacob Shore - All sites (RSS)", whose source is
   `email/brevo-rss-template.html` (logo: `static/images/email-logo.png`). Brevo parses
